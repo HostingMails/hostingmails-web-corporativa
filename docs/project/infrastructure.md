@@ -35,22 +35,50 @@ tipos para el despliegue antes de tocar producción.
 
 Tres VPS en **Hetzner** (no Hostinger, a diferencia del resto de proyectos):
 
-| Servidor | Para qué |
-| --- | --- |
-| `vps-dev` | Desarrollo. Se trabaja **por SSH contra este servidor**, no en local: el proyecto no se monta en la máquina de Jordi. |
-| `vps-prod` | Producción. Aquí vive la web publicada. |
-| `vps-mail` | El servicio de correo que vende HostingMails. Stack: **Mailcow** (suite dockerizada: SMTP/IMAP, webmail SOGo, antispam y panel de admin). |
+| Servidor | Host · IP | Para qué |
+| --- | --- | --- |
+| `vps-dev` | `vps-dev-01` · `178.105.61.82` | Desarrollo y proyectos. Se trabaja **por SSH contra este servidor**, no en local. Usuario `jordi` (con sudo). |
+| `vps-prod` | `vps-prod-01` · `88.99.84.127` | Producción: solo webs y apps publicadas. Solo existe el usuario `root`. |
+| `vps-mail` | *pendiente* | El servicio de correo que vende HostingMails. Stack: **Mailcow** (suite dockerizada: SMTP/IMAP, webmail SOGo, antispam y panel de admin). |
 
-`vps-mail` es el producto, no la web. La landing solo lo vende.
+**El reparto es ese y conviene respetarlo:** en `vps-prod` solo lo que está
+publicado; en `vps-dev`, el trabajo en curso. `vps-mail` es el producto, no la
+web: la landing solo lo vende.
 
-**Nginx** sirve los estáticos y **Certbot** emite el TLS. Las guías de montaje lo
-dan por hecho; está pendiente de que Jordi lo confirme (la alternativa sería
-Caddy, que trae HTTPS automático y se ahorra Certbot).
+Las dos VPS son Ubuntu 24.04 y las dos llevan **Coolify con Traefik** ocupando los
+puertos 80 y 443 — por eso no se instala Nginx a mano en ninguna.
+
+| | `vps-dev` | `vps-prod` |
+| --- | --- | --- |
+| Coolify | 4.1.2 | 4.3.23 |
+| RAM | 3,7 GB (~1,4 libres) | — |
+| Disco | 75 GB al 65% | — |
+| Node del sistema | v20.20.2 | no instalado |
+| También corre | CRM, FacturaScripts de beply, Postgres, Portainer, GitLab Runner, RustFS y varias apps | otras apps de Coolify |
+
+`vps-dev` va cargada: antes de levantar nada pesado ahí, mira `free -h`. Y el
+Node del sistema es v20, así que el proyecto usa **nvm con Node 22** para el
+usuario `jordi` y no se toca el del sistema, del que dependen las otras apps.
+
+### Qué se publica y dónde
+
+La web de HostingMails se publica **solo en `vps-prod`**. En `vps-dev` no hay
+nada publicado: el trabajo se ve con `npm run dev` por túnel SSH, y el build real
+con `npm run preview`.
+
+Si algún día hace falta enseñar el avance sin túnel, la forma limpia es publicar
+una rama `dev` en el Coolify de `vps-dev` bajo `hostingmails.dev.webscrafting.com`,
+dejando `hostingmails.demo.webscrafting.com` para producción. Hoy no está montado
+ni hace falta.
+
+**La web la sirve Coolify**, que construye desde el repositorio y publica detrás
+de su Traefik; el TLS de Let's Encrypt lo gestiona él. No hay Nginx ni Certbot
+instalados a mano, y no deben instalarse: Traefik ya tiene cogidos el 80 y el 443.
 
 Paso a paso de cada servidor:
 
-- [guides/vps-dev-setup.md](../guides/vps-dev-setup.md) — Node, repo, túnel SSH y ciclo de trabajo.
-- [guides/vps-prod-setup.md](../guides/vps-prod-setup.md) — Nginx, DNS, HTTPS, usuario de deploy y workflow.
+- [guides/vps-dev-setup.md](../guides/vps-dev-setup.md) — usuario, Node, repo, túnel SSH y ciclo de trabajo.
+- [guides/vps-prod-setup.md](../guides/vps-prod-setup.md) — Coolify: conectar GitHub, configurar el build, dominio y auto-deploy.
 
 ## Dominio
 
@@ -61,33 +89,45 @@ otro proyecto:
 http://hostingmails.demo.webscrafting.com/
 ```
 
+**El DNS no apunta donde debe.** Hoy resuelve a `vps-dev`, y la web va en
+`vps-prod`:
+
+```
+hostingmails.demo.webscrafting.com   A   178.105.61.82   ← hay que cambiarlo a 88.99.84.127
+```
+
+El DNS de `webscrafting.com` se gestiona en **Hostinger** (nameservers
+`ns1.dns-parking.com` y `ns2.dns-parking.com`), así que el registro se toca allí.
+
 > **Pendiente de confirmar:** dominio definitivo. Al fijarlo hay que tocar el
-> `canonical`, las `og:url` y las URL absolutas de `index.html`, además del DNS y
-> el certificado.
+> `canonical`, las `og:url` y las URL absolutas de `index.html`, además del DNS.
 
 ## Despliegue
 
-**GitHub Actions → SSH/rsync**: push a `main`, el workflow hace el build y sube
-el `dist/` a `vps-prod`. Así la VPS no necesita Node ni el repo.
+**Coolify**: push a `main` → webhook → Coolify clona, ejecuta `npm ci` y
+`npm run build`, y publica el `dist/` detrás de Traefik con su certificado.
 
-El repositorio ya está en git. **Falta crear `.github/workflows/deploy.yml`**: el
-contenido está escrito y listo para copiar en el paso 10 de
-[guides/vps-prod-setup.md](../guides/vps-prod-setup.md).
+Repositorio: **[HostingMails/hostingmails-web-corporativa](https://github.com/HostingMails/hostingmails-web-corporativa)**.
 
-El resumen del ciclo: trabajas por SSH en `vps-dev` → push a `main` → Actions
-construye y sube el `dist/` a `vps-prod` por rsync. `vps-dev` nunca despliega a
-producción; es el entorno de trabajo, no un paso del despliegue.
+Configuración de la aplicación en el panel:
 
-Cuando se monte, hará falta como secretos de GitHub:
-
-| Secreto | Para qué |
+| Campo | Valor |
 | --- | --- |
-| `SSH_HOST` | IP o host de `vps-prod`. |
-| `SSH_USER` | Usuario de despliegue (mejor uno dedicado, no root). |
-| `SSH_KEY` | Clave privada del usuario de despliegue. |
-| `DEPLOY_PATH` | Ruta del document root en el servidor. |
+| Build Pack | `Static` |
+| Install Command | `npm ci` |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+| Domain | `https://hostingmails.demo.webscrafting.com` |
 
-Los valores **nunca** se escriben aquí ni en el repo.
+**Falta montarlo**: el repositorio no está conectado a Coolify todavía. Paso a
+paso en [guides/vps-prod-setup.md](../guides/vps-prod-setup.md).
+
+El resumen del ciclo: trabajas por SSH en `vps-dev` → push a `main` → Coolify
+construye y publica. `vps-dev` nunca despliega a producción; es el entorno de
+trabajo, no un paso del despliegue.
+
+No hay secretos de despliegue en GitHub: con la GitHub App de Coolify, el permiso
+vive en GitHub y el webhook lo crea él.
 
 ## Variables de entorno
 
@@ -108,13 +148,17 @@ No hay analítica, ni correo transaccional, ni CDN, ni pasarela de pago.
 
 ## Pendientes de infraestructura
 
-- **Servidor web**: Nginx, pendiente de que Jordi lo confirme (ver arriba).
+- **IP de `vps-dev` y de `vps-mail`**: sin ellas no se puede cerrar el acceso ni
+  documentar el entorno de trabajo.
+- **Registro DNS**: `hostingmails.demo.webscrafting.com` apunta a la VPS del CRM,
+  no a `vps-prod`. Se cambia en Hostinger (ver arriba).
+- **Conectar el repo a Coolify**: nada publicado todavía.
 - **Formulario de contacto**: los CTA apuntan a `#contacto` y todavía no se ha
   decidido qué habrá detrás — backend propio en la VPS, servicio externo tipo
   Formspree, o solo enlaces `mailto` y WhatsApp. La decisión cambia si este
   proyecto tiene capa de servidor o no.
-- **Remoto de GitHub**: el repositorio local existe; falta crearlo en GitHub y
-  añadir el remoto. Sin eso no hay Actions.
+- **Remoto de GitHub**: el repositorio local existe y el de GitHub también, pero
+  falta `git remote add origin` y el primer push.
 - **Prettier**: no hay configuración. Jordi lo usa en el resto de proyectos y
   Neo lo ejecuta sobre los archivos que toca, así que conviene fijar un
   `.prettierrc` para que el formato no baile.

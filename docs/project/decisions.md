@@ -41,6 +41,36 @@ Node y el repositorio en producción. Así la VPS solo sirve archivos estáticos
 
 ---
 
+### 2026-09-21 · La web solo se publica en vps-prod; en dev no hay nada publicado
+
+El reparto de las VPS es: `vps-prod` para lo publicado, `vps-dev` para el
+desarrollo y los proyectos en curso. Siguiéndolo, la landing se publica solo en
+`vps-prod` y en `vps-dev` no se monta ninguna app.
+
+Por qué no hay entorno de preview: el túnel SSH cubre el día a día y
+`npm run preview` cubre probar el build antes de publicar. Jordi trabaja solo, así
+que no hay nadie a quien enseñarle una URL. Añadir una app en el Coolify de
+`vps-dev` cuesta un contenedor en una máquina que ya anda con ~1,4 GB libres.
+
+Si hiciera falta, la forma acordada es una rama `dev` publicada bajo
+`hostingmails.dev.webscrafting.com`, dejando `hostingmails.demo…` para producción.
+
+---
+
+### 2026-09-21 · Se despliega con Coolify, no con GitHub Actions
+
+**Sustituye a la decisión anterior de Actions + rsync.** Al mirar el servidor
+apareció que `vps-prod-01` ya tiene Coolify 4.3.23 con Traefik v3.6 ocupando los
+puertos 80 y 443, y otras apps desplegadas. Montar Nginx y Certbot al lado
+habría sido pelearse por los puertos para acabar haciendo lo mismo que Coolify
+ya hace: clonar el repo, construir, servir y renovar el certificado.
+
+Coste: el despliegue depende del panel, no de un archivo versionado en el repo.
+Si algún día molesta, el camino manual (usuario `deploy`, rsync y vhost) sigue
+siendo válido en una VPS sin Coolify.
+
+---
+
 ### 2026-09-21 · kebab-case en disco y CSS con clase raíz y nesting
 
 Acordado en `/neo init`. El código venía en PascalCase (`BaseButton/BaseButton.vue`)

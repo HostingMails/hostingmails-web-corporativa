@@ -1,275 +1,193 @@
-# Montar vps-prod
+# Publicar en vps-prod con Coolify
 
-Deja `vps-prod` sirviendo la web y recibiendo los despliegues automáticos desde
-GitHub Actions. Se hace **una vez**.
+Deja la web publicada en `vps-prod` y desplegándose sola en cada push. Se hace
+**una vez**.
 
-**Supuestos** (cámbialos si no cuadran): Ubuntu 22.04 o 24.04, acceso con sudo,
-y **Nginx** como servidor web. Nginx y no Caddy porque es lo estándar y porque,
-si algún día el formulario de contacto necesita backend, el `proxy_pass` ya lo
-tienes ahí.
+## Cómo leer esta guía
 
-| Dónde | Path |
+Cada bloque lleva encima una etiqueta que dice qué es:
+
+- **[PowerShell]** — se pega en tu terminal de Windows.
+- **[VPS]** — se pega en la VPS, después de conectarte por SSH.
+- **[Panel]** — se hace con el ratón en la interfaz de Coolify, no en una terminal.
+
+Si un bloque no lleva etiqueta, no es para copiar.
+
+## Lo que ya hay montado
+
+Comprobado el 21/09/2026 en el servidor:
+
+| Qué | Valor |
 | --- | --- |
-| Archivos servidos | `/var/www/hostingmails` |
-| Usuario de despliegue | `deploy` · home `/home/deploy` |
-| Claves autorizadas del deploy | `/home/deploy/.ssh/authorized_keys` |
-| Vhost de Nginx | `/etc/nginx/sites-available/hostingmails.conf` |
-| Logs | `/var/log/nginx/hostingmails.access.log` y `.error.log` |
+| Host | `vps-prod-01` · `88.99.84.127` |
+| Sistema | Ubuntu 24.04.4 LTS |
+| Coolify | 4.3.23 |
+| Proxy | Traefik v3.6, ocupando los puertos 80, 443 y 8080 |
+| Acceso | `root` con tu clave `~/.ssh/id_ed25519`. **No hay usuario `jordi`** |
+| Node / Nginx | No instalados: no hacen falta, el build va en un contenedor |
 
-La VPS **no necesita Node ni el repositorio**: recibe el `dist/` ya construido.
-
----
-
-## 1 · Conectar y actualizar
-
-```bash
-ssh root@<ip-de-vps-prod>
-apt update && apt upgrade -y
-```
+**Por eso no se monta Nginx a mano aquí.** Traefik ya tiene cogidos el 80 y el
+443; meter otro servidor web al lado es pelearse por los puertos para acabar
+haciendo lo que Coolify ya hace.
 
 ---
 
-## 2 · Usuario de despliegue
+## 1 · Entrar al panel
 
-Un usuario solo para esto, **sin sudo**. Si un día se filtra la clave del
-workflow, lo único que se puede tocar es la carpeta de la web.
+Abre en el navegador:
 
-```bash
-adduser --disabled-password --gecos "" deploy
-mkdir -p /home/deploy/.ssh
-chmod 700 /home/deploy/.ssh
-chown -R deploy:deploy /home/deploy/.ssh
+```
+http://88.99.84.127:8000
 ```
 
----
+Si le tienes un dominio puesto al propio Coolify, entra por ahí. Si no responde,
+comprueba desde tu portátil que el contenedor está vivo:
 
-## 3 · Carpeta de la web
+**[PowerShell]**
 
-```bash
-mkdir -p /var/www/hostingmails
-chown -R deploy:www-data /var/www/hostingmails
-chmod -R 755 /var/www/hostingmails
-```
-
-`deploy` escribe, Nginx (`www-data`) lee. Nada más.
-
-Una página provisional para comprobar que el servidor responde antes de tener
-la web:
-
-```bash
-echo "<h1>HostingMails · en obras</h1>" > /var/www/hostingmails/index.html
-chown deploy:www-data /var/www/hostingmails/index.html
+```powershell
+ssh root@88.99.84.127 "docker ps --filter name=coolify"
 ```
 
 ---
 
-## 4 · Nginx
+## 2 · Conectar GitHub
 
-```bash
-apt install -y nginx
-nano /etc/nginx/sites-available/hostingmails.conf
-```
+El repo es privado y vive en una organización, así que Coolify necesita permiso.
+Dos caminos; el primero es mejor porque trae el auto-deploy ya hecho.
 
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name hostingmails.demo.webscrafting.com;
+**Opción A · GitHub App (recomendada)**
 
-    root /var/www/hostingmails;
-    index index.html;
+**[Panel]**
 
-    # One-page: cualquier ruta cae en el index
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
+1. *Sources* → **+ Add** → **GitHub App**.
+2. Nombre: `HostingMails`.
+3. *Register a GitHub App* → te lleva a GitHub. Instálala en la organización
+   **HostingMails**.
+4. En *Repository access*, elige **Only select repositories** →
+   `hostingmails-web-corporativa`.
 
-    # Los assets de Vite llevan hash en el nombre: cachean para siempre
-    location /assets/ {
-        access_log off;
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
+Con esto Coolify recibe el webhook de cada push y despliega solo.
 
-    # El index nunca se cachea, o no verías los despliegues
-    location = /index.html {
-        add_header Cache-Control "no-cache";
-    }
+**Opción B · Deploy key**
 
-    gzip on;
-    gzip_types text/css application/javascript image/svg+xml;
-    gzip_min_length 1024;
+**[Panel]**
 
-    access_log /var/log/nginx/hostingmails.access.log;
-    error_log  /var/log/nginx/hostingmails.error.log;
-}
-```
+1. *Sources* → **+ Add** → **Private Repository (with deploy key)**.
+2. Coolify genera una clave pública: cópiala.
+3. Pégala en
+   https://github.com/HostingMails/hostingmails-web-corporativa/settings/keys
+   (no hace falta *Allow write access*: Coolify solo lee).
 
-Activar y recargar:
-
-```bash
-ln -s /etc/nginx/sites-available/hostingmails.conf /etc/nginx/sites-enabled/
-nginx -t                    # tiene que decir "syntax is ok"
-systemctl reload nginx
-```
+Con deploy key **no hay webhook automático**: el auto-deploy hay que montarlo
+aparte o desplegar a mano desde el panel.
 
 ---
 
-## 5 · DNS
+## 3 · Crear el proyecto
 
-Registro `A` apuntando a la IP de vps-prod:
+**[Panel]**
 
-```
-hostingmails.demo.webscrafting.com   A   <ip-de-vps-prod>
-```
-
-Se añade **donde esté gestionado el DNS de `webscrafting.com`**, no en Hetzner —
-salvo que ese dominio ya use los nameservers de Hetzner.
-
-Comprueba antes de seguir (la propagación puede tardar):
-
-```bash
-dig +short hostingmails.demo.webscrafting.com
-```
-
-Hasta que no devuelva la IP correcta, el paso 6 va a fallar.
+1. *Projects* → **+ Add** → nombre `HostingMails`.
+2. Dentro, **+ New Resource** → **Application** → la fuente del paso 2.
+3. Repositorio: `HostingMails/hostingmails-web-corporativa`.
+4. Branch: `main`.
 
 ---
 
-## 6 · HTTPS
+## 4 · Configurar el build
 
-```bash
-apt install -y certbot python3-certbot-nginx
-certbot --nginx -d hostingmails.demo.webscrafting.com
-```
+Es una SPA estática de Vite: no hay servidor que levantar, solo archivos que
+servir.
 
-Certbot edita el vhost solo y deja la renovación automática puesta. Verifica:
+**[Panel]** · pestaña *General* de la aplicación
 
-```bash
-systemctl status certbot.timer
-certbot renew --dry-run
-```
-
----
-
-## 7 · Cortafuegos
-
-```bash
-ufw allow OpenSSH
-ufw allow 'Nginx Full'
-ufw enable
-ufw status
-```
-
----
-
-## 8 · Clave SSH para el despliegue
-
-Genera el par **en tu portátil** (no en el servidor: la privada no debe pasar
-por ahí):
-
-```bash
-ssh-keygen -t ed25519 -C "github-actions-hostingmails" -f ~/.ssh/hostingmails_deploy -N ""
-```
-
-La **pública** va al servidor:
-
-```bash
-# desde tu portátil
-ssh-copy-id -i ~/.ssh/hostingmails_deploy.pub deploy@<ip-de-vps-prod>
-
-# o a mano, en la VPS:
-nano /home/deploy/.ssh/authorized_keys      # pegar el contenido del .pub
-chmod 600 /home/deploy/.ssh/authorized_keys
-chown deploy:deploy /home/deploy/.ssh/authorized_keys
-```
-
-Prueba que entra sin contraseña:
-
-```bash
-ssh -i ~/.ssh/hostingmails_deploy deploy@<ip-de-vps-prod> "ls -la /var/www/hostingmails"
-```
-
----
-
-## 9 · Secretos en GitHub
-
-Repo → **Settings → Secrets and variables → Actions → New repository secret**:
-
-| Secreto | Valor |
+| Campo | Valor |
 | --- | --- |
-| `SSH_HOST` | IP de vps-prod |
-| `SSH_USER` | `deploy` |
-| `SSH_KEY` | contenido **completo** de `~/.ssh/hostingmails_deploy` (la privada, con las líneas `BEGIN`/`END`) |
-| `DEPLOY_PATH` | `/var/www/hostingmails` |
+| Build Pack | `Static` |
+| Install Command | `npm ci` |
+| Build Command | `npm run build` |
+| Publish / Output Directory | `dist` |
+| Port | `80` (lo sirve el contenedor estático; no lo toques salvo que Coolify se queje) |
 
-La privada nunca se commitea ni se escribe en ningún `.md`.
+> Si tu versión del panel llama a esos campos de otra forma, el orden es el
+> mismo: instalar, construir, y decirle dónde queda el resultado. El resultado de
+> `npm run build` en este proyecto siempre es `dist/`.
 
----
-
-## 10 · Workflow de despliegue
-
-En el proyecto, `.github/workflows/deploy.yml`:
-
-```yaml
-name: Deploy a producción
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - run: npm ci
-      - run: npm run build
-
-      - name: Preparar clave SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
-
-      - name: Subir dist a vps-prod
-        run: |
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key" \
-            dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
-```
-
-Dos detalles que importan:
-
-- **`dist/` con barra final.** Sin ella rsync copiaría la carpeta dentro del
-  destino y acabarías con `/var/www/hostingmails/dist/`.
-- **`--delete`** borra en el servidor lo que ya no está en el build. Es lo que
-  quieres, pero significa que **todo lo que haya en `/var/www/hostingmails` y no
-  venga del build desaparece**. No dejes ahí nada a mano.
-
-El `npm run build` incluye `vue-tsc --noEmit`, así que un error de tipos para el
-despliegue antes de tocar producción. Es a propósito.
+Ojo: `npm run build` lanza `vue-tsc --noEmit` antes de compilar. Si hay un error
+de tipos, el despliegue se para ahí y producción no se toca. Es a propósito.
 
 ---
 
-## 11 · Primer despliegue
+## 5 · Dominio y DNS
 
-Haz push a `main` y mira la pestaña **Actions** del repo. Cuando termine:
+**Esto hay que arreglarlo antes de desplegar.** Ahora mismo el subdominio existe
+pero apunta a otro servidor:
 
-```bash
-curl -I https://hostingmails.demo.webscrafting.com
-ls -la /var/www/hostingmails
+```
+hostingmails.demo.webscrafting.com   A   178.105.61.82   ← la VPS del CRM
 ```
 
-Si algo no cuadra, el log está en `/var/log/nginx/hostingmails.error.log`.
+Tiene que apuntar a vps-prod-01:
+
+```
+hostingmails.demo.webscrafting.com   A   88.99.84.127
+```
+
+El DNS de `webscrafting.com` está en **Hostinger** (los nameservers son
+`ns1.dns-parking.com` y `ns2.dns-parking.com`), así que el registro se cambia en
+el panel DNS de Hostinger, no en Hetzner ni en Coolify.
+
+Comprueba desde tu portátil hasta que devuelva la IP nueva (puede tardar):
+
+**[PowerShell]**
+
+```powershell
+Resolve-DnsName hostingmails.demo.webscrafting.com
+```
+
+Cuando resuelva bien, en el panel:
+
+**[Panel]** · *General* → *Domains*
+
+```
+https://hostingmails.demo.webscrafting.com
+```
+
+Ponlo con **https://**: así Traefik pide el certificado de Let's Encrypt solo. Si
+lo pones con `http://` no habrá certificado.
+
+---
+
+## 6 · Desplegar
+
+**[Panel]** → botón **Deploy**.
+
+Sigue el log en vivo en la pestaña *Deployments*. La primera vez tarda más porque
+se descarga todo `node_modules`.
+
+---
+
+## 7 · Comprobar
+
+**[PowerShell]**
+
+```powershell
+curl.exe -I https://hostingmails.demo.webscrafting.com
+```
+
+En PowerShell hay que llamar a `curl.exe`: `curl` a secas es un alias de
+`Invoke-WebRequest` y no acepta `-I`. Tiene que responder `HTTP/2 200`.
+
+---
+
+## 8 · Auto-deploy en cada push
+
+Con la **GitHub App** del paso 2 ya funciona: push a `main` → webhook → Coolify
+construye y publica. Compruébalo en *Webhooks* dentro de la aplicación.
+
+Si usaste **deploy key**, no hay webhook: entra al panel y pulsa *Deploy* cuando
+quieras publicar.
 
 ---
 
@@ -277,18 +195,24 @@ Si algo no cuadra, el log está en `/var/log/nginx/hostingmails.error.log`.
 
 | Síntoma | Qué mirar |
 | --- | --- |
-| 403 Forbidden | Permisos de `/var/www/hostingmails`: tiene que ser `deploy:www-data` y 755. |
-| 404 en todo | El `root` del vhost no apunta donde crees, o el rsync dejó los archivos en `.../dist/`. |
-| La Action falla en el rsync | `SSH_KEY` mal pegada (falta una línea o sobra un salto), o el `authorized_keys` no tiene permisos 600. |
-| Despliega pero ves la versión vieja | Caché del navegador o del CDN. `Ctrl+Shift+R`. Si persiste, revisa el `Cache-Control` del `index.html`. |
-| Certbot falla | El DNS todavía no resuelve a esta IP. Repite el paso 5 y espera. |
+| El build falla en `npm ci` | El `package-lock.json` no está commiteado o no cuadra con el `package.json`. |
+| El build falla en `vue-tsc` | Error de tipos real. Reprodúcelo con `npm run build` en vps-dev. |
+| Despliega pero sale 404 | El *Output Directory* no es `dist`, o el build no generó nada. Mira el log del deploy. |
+| Sin certificado / aviso de seguridad | El dominio se puso con `http://`, o el DNS todavía no apuntaba a esta IP cuando Traefik pidió el certificado. Arregla el DNS y vuelve a desplegar. |
+| «too many certificates» de Let's Encrypt | Has reintentado demasiadas veces con el DNS mal. Hay que esperar; el límite es semanal. |
+| El push no dispara nada | Estás con deploy key, no con GitHub App. O el webhook de GitHub está fallando: míralo en *Settings → Webhooks* del repo. |
+| El panel no carga | `ssh root@88.99.84.127 "docker ps --filter name=coolify"` y, si hace falta, `docker restart coolify`. |
 
 ## Volver atrás
 
-No hay versionado de releases: el `dist/` se sobreescribe. Para revertir, haz
-`git revert` del commit malo y push — el workflow vuelve a desplegar. Tarda lo
-mismo que un despliegue normal.
+En *Deployments* tienes el historial: cada despliegue guarda su commit. Para
+revertir, **Redeploy** sobre el despliegue anterior que funcionaba. Si prefieres
+dejar el historial limpio, `git revert` del commit malo y push, que vuelve a
+desplegar.
 
-Si algún día quieres rollback instantáneo, el patrón es desplegar a
-`/var/www/hostingmails/releases/<sha>` y mover un symlink `current`. Más piezas;
-hoy no hace falta.
+## Nota sobre el usuario `jordi`
+
+En este servidor solo existe `root`. Con Coolify no hace falta más: no se sube
+nada por SSH ni por rsync, lo hace todo el panel desde el repositorio. Si algún
+día quieres un usuario sin privilegios para entrar a mirar, se crea con
+`adduser`, pero no es un paso necesario para publicar.

@@ -54,11 +54,17 @@ Va en **VPS propias de Hetzner**, no en Hostinger: `vps-dev` (desarrollo por SSH
 [guides/vps-dev-setup.md](guides/vps-dev-setup.md) y
 [guides/vps-prod-setup.md](guides/vps-prod-setup.md).
 
-- [ ] Confirmar **Nginx** como servidor web. Las guías lo dan por hecho; si
-      prefieres Caddy, dímelo y las reescribo (Caddy te ahorra Certbot).
-- [ ] Dominio definitivo. Mientras tanto va en `hostingmails.demo.webscrafting.com`,
-      que necesita un registro `A` donde esté gestionado el DNS de `webscrafting.com`.
-- [ ] Crear el par de claves del deploy y cargar los 4 secretos en GitHub
-      (`SSH_HOST`, `SSH_USER`, `SSH_KEY`, `DEPLOY_PATH`) — paso 8 y 9 de la guía de prod.
+- [ ] **Pasarme la IP de `vps-mail`** para acabar de documentar el producto.
+      (`vps-dev-01` = `178.105.61.82` y `vps-prod-01` = `88.99.84.127` ya están,
+      con sus atajos `ssh vps-dev` y `ssh vps-prod` funcionando.)
+- [ ] Borrar de `/home/jordi/.ssh` en vps-dev las claves de otros proyectos que
+      se copiaron al crear el usuario (`id_ed25519_cartadigital`,
+      `id_ed25519_tpvofasty`), si no las usas desde ese usuario.
+- [ ] **Cambiar el registro DNS**: `hostingmails.demo.webscrafting.com` apunta hoy
+      a `178.105.61.82` (la VPS del CRM) y tiene que ir a `88.99.84.127`. Se toca
+      en Hostinger, que es donde están los nameservers de `webscrafting.com`.
+- [ ] Instalar la **GitHub App de Coolify** en la organización HostingMails y darle
+      acceso al repo — paso 2 de la guía de prod. Sin eso no hay auto-deploy.
+- [ ] Dominio definitivo para el producto.
 - [ ] Decidir si quieres ver el trabajo en curso solo por túnel SSH (lo montado)
       o expuesto en un `dev.` público.
