@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import BaseButton from '../ui/BaseButton/BaseButton.vue'
-import BrandLogo from '../ui/BrandLogo/BrandLogo.vue'
-import { navLinks, sectionIds } from '../../data/navigation'
-import { useScrollLock } from '../../composables/useScrollLock'
-import { useScrollSpy } from '../../composables/useScrollSpy'
-import { useStickyHeader } from '../../composables/useStickyHeader'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import BaseButton from '@/components/ui/BaseButton/BaseButton.vue'
+import BrandLogo from '@/components/ui/BrandLogo/BrandLogo.vue'
+import { navLinks, sectionIds } from '@/data/navigation'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { useScrollSpy } from '@/composables/useScrollSpy'
+import { useStickyHeader } from '@/composables/useStickyHeader'
 import './Header.css'
 
 const isMenuOpen = ref(false)

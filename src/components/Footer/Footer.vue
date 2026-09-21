@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BrandLogo from '../ui/BrandLogo/BrandLogo.vue'
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import { navLinks } from '../../data/navigation'
+import BrandLogo from '@/components/ui/BrandLogo/BrandLogo.vue'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import { navLinks } from '@/data/navigation'
 import './Footer.css'
 
 interface FooterColumn {

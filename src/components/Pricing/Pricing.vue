@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import BaseButton from '../ui/BaseButton/BaseButton.vue'
-import SectionHeading from '../ui/SectionHeading/SectionHeading.vue'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import BaseButton from '@/components/ui/BaseButton/BaseButton.vue'
+import SectionHeading from '@/components/ui/SectionHeading/SectionHeading.vue'
 import './Pricing.css'
 
 type BillingCycle = 'monthly' | 'yearly'

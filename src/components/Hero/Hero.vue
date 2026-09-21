@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import BaseButton from '../ui/BaseButton/BaseButton.vue'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import BaseButton from '@/components/ui/BaseButton/BaseButton.vue'
 import './Hero.css'
 
 const highlights = [

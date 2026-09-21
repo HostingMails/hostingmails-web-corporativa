@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import SectionHeading from '../ui/SectionHeading/SectionHeading.vue'
-import type { IconName } from '../ui/AppIcon/icons'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import SectionHeading from '@/components/ui/SectionHeading/SectionHeading.vue'
+import type { IconName } from '@/components/ui/AppIcon/icons'
 import './Features.css'
 
 interface Feature {

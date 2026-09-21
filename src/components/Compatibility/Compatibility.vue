@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppIcon from '../ui/AppIcon/AppIcon.vue'
-import BaseButton from '../ui/BaseButton/BaseButton.vue'
-import type { IconName } from '../ui/AppIcon/icons'
+import AppIcon from '@/components/ui/AppIcon/AppIcon.vue'
+import BaseButton from '@/components/ui/BaseButton/BaseButton.vue'
+import type { IconName } from '@/components/ui/AppIcon/icons'
 import './Compatibility.css'
 
 interface MailApp {
