@@ -7,10 +7,13 @@ src/
 ├── components/
 │   ├── Header/          Header.vue + Header.css
 │   ├── Hero/            Hero.vue + Hero.css
+│   ├── ValueProps/      ValueProps.vue + ValueProps.css
 │   ├── Features/        Features.vue + Features.css
+│   ├── Included/        Included.vue + Included.css
 │   ├── HowItWorks/      HowItWorks.vue + HowItWorks.css
 │   ├── Compatibility/   Compatibility.vue + Compatibility.css
 │   ├── Pricing/         Pricing.vue + Pricing.css
+│   ├── AddOns/          AddOns.vue + AddOns.css
 │   ├── FAQ/             FAQ.vue + FAQ.css
 │   ├── CTA/             CTA.vue + CTA.css
 │   ├── Footer/          Footer.vue + Footer.css
@@ -59,9 +62,15 @@ No hay `<style>` dentro de los `.vue`.
 **Contenido de cada sección.** Los textos y listas viven dentro de su propio componente,
 tipados. Así se puede trabajar sección a sección sin tocar nada más.
 
-**Anclas.** Los ids de sección (`caracteristicas`, `como-funciona`, `compatibilidad`,
-`planes`, `faq`, `contacto`) salen de `src/data/navigation.ts`. Si se añade una sección,
-se añade ahí y aparece sola en la cabecera y en el pie.
+**Anclas.** Los ids de sección (`caracteristicas`, `incluido`, `como-funciona`,
+`compatibilidad`, `planes`, `servicios`, `faq`, `contacto`) salen de
+`src/data/navigation.ts`. Si se añade una sección, se añade ahí y aparece sola en la
+cabecera y en el pie. En el menú se muestran seis; `servicios` y `contacto` solo se
+enlazan desde el pie y desde los botones.
+
+**Fondos.** Cada sección lleva una utilidad de fondo (`.hm-section--cool`, `--mint`,
+`--accent`, `--slate`) para que el ritmo claro-oscuro no se rompa al reordenarlas.
+Está descrito en `docs/design/design-system.md`.
 
 ## Responsive
 
@@ -73,8 +82,10 @@ Mobile-first. Los saltos se escriben con sintaxis de rango (`@media (width >= 90
 | ≥ 560 px | Dos columnas en la rejilla de apps y en el pie |
 | ≥ 680 px | Bento de características a 6 columnas |
 | ≥ 720 px | Barra lateral visible en la ventana del hero; planes a dos columnas |
-| ≥ 900 px | Navegación de escritorio; paneles laterales fijos en Cómo funciona y FAQ |
+| ≥ 900 px | Paneles laterales fijos en Cómo funciona y FAQ |
+| ≥ 940 px | Qué incluye a tres columnas |
 | ≥ 1000 px | Bento a 12 columnas; tres planes en línea |
+| ≥ 1060 px | Navegación de escritorio (por debajo, menú móvil: son seis enlaces) |
 
 Los tamaños de texto son fluidos con `clamp()` (ver `variables.css`).
 

@@ -1,0 +1,72 @@
+/* Tira oscura justo debajo del hero: corta el verde y marca el
+   argumento comercial antes de entrar en funcionalidades. */
+.value-props {
+  position: relative;
+  padding-block: clamp(2.5rem, 4vw, 3.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--hm-gradient-slate);
+  color: var(--hm-color-text-inverse);
+}
+
+.value-props__pattern {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(rgb(255 255 255 / 0.1) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(100deg, #000 0%, transparent 70%);
+}
+
+.value-props__list {
+  display: grid;
+  gap: var(--hm-space-6);
+}
+
+.value-props__item {
+  display: flex;
+  gap: var(--hm-space-4);
+  align-items: flex-start;
+}
+
+.value-props__icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgb(200 134 26 / 0.35);
+  border-radius: var(--hm-radius-md);
+  background-color: rgb(200 134 26 / 0.14);
+  color: var(--hm-amber-300);
+}
+
+.value-props__text {
+  display: grid;
+  gap: var(--hm-space-2);
+}
+
+.value-props__title {
+  color: var(--hm-color-text-inverse);
+  font-size: var(--hm-text-base);
+}
+
+.value-props__description {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 760px) {
+  .value-props__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--hm-space-8);
+  }
+
+  /* Separadores finos entre columnas */
+  .value-props__item + .value-props__item {
+    padding-left: var(--hm-space-8);
+    border-left: 1px solid var(--hm-color-border-inverse);
+  }
+}

@@ -44,6 +44,7 @@
   color: var(--hm-color-text-muted);
   font-size: var(--hm-text-sm);
   font-weight: var(--hm-weight-medium);
+  white-space: nowrap;
   transition: color var(--hm-duration) var(--hm-ease);
 
   &::after {
@@ -182,7 +183,7 @@
 }
 
 /* --- Puntos de ruptura --- */
-@media (width >= 900px) {
+@media (width >= 1060px) {
   .site-header__burger {
     display: none;
   }

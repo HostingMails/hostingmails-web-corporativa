@@ -4,9 +4,9 @@ import BaseButton from '@/components/ui/BaseButton/BaseButton.vue'
 import './Hero.css'
 
 const highlights = [
-  'Buzones con tu dominio',
-  'Configuración guiada',
-  'Webmail incluido',
+  'Buzones sin límite fijo',
+  'Lo configuramos nosotros',
+  'Desde 29 € al año',
 ] as const
 
 interface PreviewMail {
@@ -68,8 +68,8 @@ const folders = [
         </h1>
 
         <p class="hero__subtitle">
-          Buzones, alias, reenvíos y protección antispam en un servicio pensado para trabajar cada
-          día. Configúralo una vez y úsalo desde el ordenador, el móvil y el webmail.
+          Contratas almacenamiento para toda la empresa y repartes los buzones como quieras. Sin
+          pagar una licencia por cada persona, con alias, reenvíos y antispam incluidos.
         </p>
 
         <div class="hero__actions">
@@ -130,6 +130,21 @@ const folders = [
                 </li>
               </ul>
             </div>
+          </div>
+
+          <!-- Barra de estado: enseña el modelo de almacenamiento compartido -->
+          <div class="hero__storage">
+            <div class="hero__storage-head">
+              <span class="hero__storage-label">
+                <AppIcon name="database" :size="14" />
+                Almacenamiento del plan
+              </span>
+              <span class="hero__storage-value">6,4 GB de 20 GB</span>
+            </div>
+            <div class="hero__storage-track">
+              <span class="hero__storage-fill"></span>
+            </div>
+            <p class="hero__storage-note">Compartido entre los 8 buzones de la empresa</p>
           </div>
         </div>
 

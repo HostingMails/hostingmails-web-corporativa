@@ -1,0 +1,177 @@
+/* Bloque oscuro en pizarra: separa las funcionalidades técnicas del
+   resto de la página, que es clara y verde. */
+.included {
+  position: relative;
+  padding-block: var(--hm-section-y);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--hm-gradient-slate);
+  color: var(--hm-color-text-inverse);
+}
+
+.included__glow {
+  position: absolute;
+  z-index: -1;
+  top: -30%;
+  left: 50%;
+  width: 60rem;
+  max-width: 120%;
+  aspect-ratio: 2;
+  background: radial-gradient(ellipse, rgb(38 138 96 / 0.3), transparent 65%);
+  filter: blur(60px);
+  transform: translateX(-50%);
+}
+
+.included__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-4);
+  max-width: 40rem;
+}
+
+.included__eyebrow {
+  color: var(--hm-amber-300);
+}
+
+.included__title {
+  color: var(--hm-color-text-inverse);
+  font-size: var(--hm-text-3xl);
+}
+
+.included__intro {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Grupos --- */
+.included__groups {
+  display: grid;
+  gap: var(--hm-space-4);
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.included__group {
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--hm-color-border-inverse);
+  border-radius: var(--hm-radius-lg);
+  background-color: rgb(255 255 255 / 0.04);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: rgb(255 255 255 / 0.3);
+    background-color: rgb(255 255 255 / 0.07);
+  }
+}
+
+.included__group-head {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: center;
+  padding-bottom: var(--hm-space-4);
+  margin-bottom: var(--hm-space-4);
+  border-bottom: 1px solid var(--hm-color-border-inverse);
+}
+
+.included__group-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--hm-radius-sm);
+  background-color: rgb(255 255 255 / 0.1);
+  color: var(--hm-green-300);
+}
+
+.included__group-title {
+  color: var(--hm-color-text-inverse);
+  font-size: var(--hm-text-base);
+}
+
+.included__items {
+  display: grid;
+  gap: var(--hm-space-3);
+}
+
+.included__item {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: center;
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-sm);
+
+  & .app-icon {
+    flex-shrink: 0;
+    color: var(--hm-green-300);
+  }
+}
+
+/* --- Lo que no entra --- */
+.included__notes {
+  display: grid;
+  gap: var(--hm-space-4);
+  margin-top: var(--hm-space-6);
+}
+
+.included__note {
+  padding: var(--hm-space-4) var(--hm-space-5);
+  border: 1px dashed var(--hm-color-border-inverse);
+  border-radius: var(--hm-radius-md);
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hm-space-2) var(--hm-space-5);
+  }
+
+  & li {
+    position: relative;
+    color: var(--hm-color-text-inverse-muted);
+    font-size: var(--hm-text-sm);
+
+    &:not(:last-child)::after {
+      content: "·";
+      position: absolute;
+      right: calc(var(--hm-space-3) * -1);
+      color: var(--hm-slate-400);
+    }
+  }
+}
+
+.included__note-label {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  margin-bottom: var(--hm-space-3);
+  color: var(--hm-slate-400);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.included__note--later {
+  border-style: solid;
+  border-color: rgb(200 134 26 / 0.35);
+  background-color: rgb(200 134 26 / 0.08);
+
+  & .included__note-label {
+    color: var(--hm-amber-300);
+  }
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 680px) {
+  .included__notes {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+@media (width >= 940px) {
+  .included__groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--hm-space-5);
+  }
+}

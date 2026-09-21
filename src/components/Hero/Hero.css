@@ -299,6 +299,59 @@
   font-size: var(--hm-text-xs);
 }
 
+/* --- Barra de estado de la ventana --- */
+.hero__storage {
+  padding: var(--hm-space-4) var(--hm-space-5);
+  border-top: 1px solid var(--hm-color-border);
+  background-color: var(--hm-neutral-50);
+}
+
+.hero__storage-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-2) var(--hm-space-4);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--hm-space-2);
+}
+
+.hero__storage-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-medium);
+}
+
+.hero__storage-value {
+  color: var(--hm-color-accent-strong);
+  font-family: var(--hm-font-mono);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+}
+
+.hero__storage-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-neutral-200);
+}
+
+.hero__storage-fill {
+  display: block;
+  width: 32%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--hm-gradient-accent);
+}
+
+.hero__storage-note {
+  margin-top: var(--hm-space-2);
+  color: var(--hm-neutral-400);
+  font-size: var(--hm-text-xs);
+}
+
 /* --- Tarjetas flotantes --- */
 .hero__badge {
   display: flex;

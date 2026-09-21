@@ -1,6 +1,6 @@
 .site-footer {
   padding-top: clamp(3rem, 6vw, 5rem);
-  background-color: var(--hm-color-bg-dark);
+  background-color: var(--hm-color-bg-slate);
   color: var(--hm-color-text-inverse);
 }
 

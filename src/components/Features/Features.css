@@ -66,8 +66,26 @@
 
 .features__icon--outline {
   border: 1px solid var(--hm-color-border);
-  background-color: var(--hm-neutral-50);
+  background-color: var(--hm-color-bg-cool);
   color: var(--hm-green-600);
+}
+
+.features__icon--accent {
+  background-color: var(--hm-amber-100);
+  color: var(--hm-color-accent-strong);
+}
+
+/* La tarjeta del almacenamiento compartido lleva el acento cálido:
+   es el argumento que nos separa de la competencia. */
+.features__card--accent {
+  border-color: var(--hm-amber-200);
+  background:
+    linear-gradient(165deg, var(--hm-amber-50) 0%, rgb(255 255 255 / 0) 60%),
+    var(--hm-color-surface);
+
+  &:hover {
+    border-color: var(--hm-amber-300);
+  }
 }
 
 /* --- Tarjeta destacada --- */

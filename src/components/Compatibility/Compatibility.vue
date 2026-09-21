@@ -13,8 +13,8 @@ interface MailApp {
 const apps: readonly MailApp[] = [
   { name: 'Outlook', platform: 'Windows y Mac', icon: 'mail' },
   { name: 'Apple Mail', platform: 'Mac, iPhone y iPad', icon: 'inbox' },
-  { name: 'Gmail', platform: 'App para Android e iOS', icon: 'smartphone' },
   { name: 'Thunderbird', platform: 'Windows, Mac y Linux', icon: 'laptop' },
+  { name: 'Gmail', platform: 'App de Android e iOS, por IMAP', icon: 'smartphone' },
   { name: 'Correo de Android', platform: 'App del sistema', icon: 'at' },
   { name: 'Webmail', platform: 'Cualquier navegador', icon: 'browser' },
 ] as const
@@ -28,7 +28,7 @@ const protocols = ['IMAP', 'SMTP', 'POP3'] as const
 </script>
 
 <template>
-  <section id="compatibilidad" class="hm-section compatibility">
+  <section id="compatibilidad" class="hm-section hm-section--edge-bottom compatibility">
     <div class="hm-container compatibility__inner">
       <div class="compatibility__content">
         <p class="hm-eyebrow">Compatibilidad</p>
@@ -47,6 +47,18 @@ const protocols = ['IMAP', 'SMTP', 'POP3'] as const
             </span>
           </li>
         </ul>
+
+        <!-- Google retira "Enviar como" para cuentas externas en enero de 2027,
+             así que conviene decirlo antes de que el cliente lo descubra. -->
+        <aside class="compatibility__warning">
+          <span class="compatibility__warning-icon"><AppIcon name="sparkle" :size="16" /></span>
+          <p>
+            <strong>Sobre Gmail:</strong> en el móvil puedes añadir tu cuenta por IMAP y usarla con
+            normalidad. En el Gmail del navegador, Google retira en enero de 2027 la opción de
+            enviar como cuenta externa; para trabajar desde el ordenador te recomendamos Outlook,
+            Apple Mail, Thunderbird o nuestro webmail.
+          </p>
+        </aside>
 
         <BaseButton href="#contacto" variant="ghost" size="md">
           Ver guías de configuración

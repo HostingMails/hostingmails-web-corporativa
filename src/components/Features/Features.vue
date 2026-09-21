@@ -8,15 +8,17 @@ interface Feature {
   icon: IconName
   title: string
   description: string
+  /** Se pinta en ámbar por ser el argumento que nos diferencia. */
+  accent?: boolean
 }
 
 /** Tarjetas de la fila intermedia del bento. */
 const features: readonly Feature[] = [
   {
     icon: 'at',
-    title: 'Alias por buzón',
+    title: 'Alias de área',
     description:
-      'Crea direcciones de área como info@, ventas@ o soporte@ y recíbelas en el buzón que quieras.',
+      'Crea info@, ventas@ o soporte@ y recíbelas en el buzón que quieras. No cuentan como cuenta aparte.',
   },
   {
     icon: 'forward',
@@ -26,9 +28,10 @@ const features: readonly Feature[] = [
   },
   {
     icon: 'database',
-    title: 'Almacenamiento por buzón',
+    title: 'Almacenamiento compartido',
     description:
-      'Cada buzón tiene su propio espacio, ampliable cuando el equipo o el archivo histórico crecen.',
+      'Los GB son del plan entero. Si un buzón crece más que el resto, nadie se queda sin espacio.',
+    accent: true,
   },
 ] as const
 
@@ -59,8 +62,8 @@ const webmailPoints = ['Acceso desde el navegador', 'Búsqueda en todo el buzón
             <div>
               <h3 class="features__title">Buzones con tu dominio</h3>
               <p class="features__text">
-                Cuentas reales con el nombre de tu empresa, creadas y gestionadas desde un único
-                sitio.
+                Cuentas reales con el nombre de tu empresa. Crea las que necesite el equipo dentro
+                del espacio de tu plan.
               </p>
             </div>
           </div>
@@ -95,8 +98,12 @@ const webmailPoints = ['Acceso desde el navegador', 'Búsqueda en todo el buzón
           :key="feature.title"
           v-reveal="index * 70"
           class="features__card features__card--compact"
+          :class="{ 'features__card--accent': feature.accent }"
         >
-          <span class="features__icon features__icon--outline">
+          <span
+            class="features__icon"
+            :class="feature.accent ? 'features__icon--accent' : 'features__icon--outline'"
+          >
             <AppIcon :name="feature.icon" :size="20" />
           </span>
           <h3 class="features__title features__title--sm">{{ feature.title }}</h3>

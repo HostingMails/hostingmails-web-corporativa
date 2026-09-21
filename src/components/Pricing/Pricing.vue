@@ -10,76 +10,112 @@ type BillingCycle = 'monthly' | 'yearly'
 interface Plan {
   id: string
   name: string
-  summary: string
+  audience: string
+  storage: string
+  domains: string
+  monthly: number
+  yearly: number
   features: readonly string[]
   featured?: boolean
-  ctaLabel: string
 }
 
 /**
- * Estructura provisional. Los importes y los límites de cada plan se
- * definirán más adelante; aquí solo queda montada la composición.
+ * Tarifas orientativas mientras se cierran los costes de explotación.
+ * El modelo sí es el definitivo: se vende almacenamiento compartido por
+ * empresa, no una licencia por cada persona.
  */
 const plans: readonly Plan[] = [
   {
     id: 'esencial',
     name: 'Esencial',
-    summary: 'Para empezar con el correo de tu dominio.',
+    audience: 'Autónomos y pequeños negocios',
+    storage: '5 GB',
+    domains: '1 dominio',
+    monthly: 2.9,
+    yearly: 29,
     features: [
-      'Buzones con tu dominio',
-      'Alias y reenvíos',
-      'Webmail incluido',
+      'Buzones y alias sin límite fijo',
+      'IMAP, SMTP y webmail',
       'Antispam y antivirus',
+      'SPF, DKIM y DMARC configurados',
+      'Soporte por correo',
     ],
-    ctaLabel: 'Me interesa',
-  },
-  {
-    id: 'profesional',
-    name: 'Profesional',
-    summary: 'Para equipos que viven dentro del correo.',
-    features: [
-      'Todo lo del plan Esencial',
-      'Más almacenamiento por buzón',
-      'Varios dominios en la misma cuenta',
-      'Ayuda con la migración',
-    ],
-    featured: true,
-    ctaLabel: 'Me interesa',
   },
   {
     id: 'empresa',
     name: 'Empresa',
-    summary: 'Para estructuras con necesidades propias.',
+    audience: 'Pequeñas empresas con equipo',
+    storage: '20 GB',
+    domains: 'Hasta 3 dominios',
+    monthly: 5.9,
+    yearly: 59,
     features: [
-      'Todo lo del plan Profesional',
-      'Configuración a medida',
-      'Gestión de departamentos',
-      'Acompañamiento en el alta',
+      'Todo lo del plan Esencial',
+      'Buzones para todo el equipo',
+      'Alias de área: info@, ventas@…',
+      'Reenvíos y respuestas automáticas',
+      'Soporte por correo',
     ],
-    ctaLabel: 'Hablemos',
+    featured: true,
+  },
+  {
+    id: 'business',
+    name: 'Business',
+    audience: 'Empresas y agencias',
+    storage: '50 GB',
+    domains: 'Hasta 10 dominios',
+    monthly: 9.9,
+    yearly: 99,
+    features: [
+      'Todo lo del plan Empresa',
+      'Dominios de clientes en la misma cuenta',
+      'Volumen de correo alto',
+      'Prioridad en la migración',
+      'Soporte por correo',
+    ],
   },
 ] as const
 
-const billing = ref<BillingCycle>('monthly')
+const billing = ref<BillingCycle>('yearly')
 
-const unit = computed(() => (billing.value === 'monthly' ? '/ buzón al mes' : '/ buzón al año'))
+const options = { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 } as const
+const euroExact = new Intl.NumberFormat('es-ES', { ...options, minimumFractionDigits: 2 })
+const euroRound = new Intl.NumberFormat('es-ES', { ...options, minimumFractionDigits: 0 })
+
+/** 29 € se escribe sin decimales; 2,90 € con ellos. */
+const euro = (value: number) =>
+  Number.isInteger(value) ? euroRound.format(value) : euroExact.format(value)
+
+const isYearly = computed(() => billing.value === 'yearly')
+
+const priceOf = (plan: Plan) => euro(isYearly.value ? plan.yearly : plan.monthly)
+
+const periodLabel = computed(() => (isYearly.value ? 'al año' : 'al mes'))
+
+/** Lo que se ahorra pagando un año por adelantado. */
+const savingOf = (plan: Plan) => euro(plan.monthly * 12 - plan.yearly)
+
+const alternativeOf = (plan: Plan) =>
+  isYearly.value
+    ? `o ${euro(plan.monthly)} al mes`
+    : `o ${euro(plan.yearly)} al año pagando de una vez`
 </script>
 
 <template>
-  <section id="planes" class="hm-section hm-section--alt pricing">
+  <section id="planes" class="hm-section hm-section--mint pricing">
     <div class="hm-container">
       <SectionHeading
         eyebrow="Planes"
-        title="Elige el tamaño que necesita tu equipo"
-        description="Tres formas de contratar el servicio según el número de buzones y el espacio que necesites."
+        title="Pagas por el espacio, no por cada persona"
+        description="El almacenamiento es compartido entre todos los buzones de la empresa. Reparte las cuentas como te convenga."
       />
 
       <div class="pricing__toggle" role="group" aria-label="Ciclo de facturación">
         <button
           type="button"
           class="pricing__toggle-option"
-          :class="{ 'pricing__toggle-option--active': billing === 'monthly' }"
-          :aria-pressed="billing === 'monthly'"
+          :class="{ 'pricing__toggle-option--active': !isYearly }"
+          :aria-pressed="!isYearly"
           @click="billing = 'monthly'"
         >
           Mensual
@@ -87,11 +123,12 @@ const unit = computed(() => (billing.value === 'monthly' ? '/ buzón al mes' : '
         <button
           type="button"
           class="pricing__toggle-option"
-          :class="{ 'pricing__toggle-option--active': billing === 'yearly' }"
-          :aria-pressed="billing === 'yearly'"
+          :class="{ 'pricing__toggle-option--active': isYearly }"
+          :aria-pressed="isYearly"
           @click="billing = 'yearly'"
         >
           Anual
+          <span class="pricing__toggle-badge">más barato</span>
         </button>
       </div>
 
@@ -105,19 +142,29 @@ const unit = computed(() => (billing.value === 'monthly' ? '/ buzón al mes' : '
         >
           <p v-if="plan.featured" class="pricing__tag">
             <AppIcon name="sparkle" :size="14" />
-            Más habitual
+            El más contratado
           </p>
 
           <header class="pricing__card-head">
             <h3 class="pricing__plan">{{ plan.name }}</h3>
-            <p class="pricing__summary">{{ plan.summary }}</p>
+            <p class="pricing__audience">{{ plan.audience }}</p>
           </header>
 
-          <div class="pricing__price">
-            <span class="pricing__price-value" aria-hidden="true">—</span>
-            <span class="pricing__price-unit">{{ unit }}</span>
+          <div class="pricing__storage">
+            <span class="pricing__storage-value">{{ plan.storage }}</span>
+            <span class="pricing__storage-label">
+              de almacenamiento<br />compartido · {{ plan.domains }}
+            </span>
           </div>
-          <p class="pricing__price-note">Tarifa pendiente de publicar</p>
+
+          <div class="pricing__price">
+            <span class="pricing__price-value">{{ priceOf(plan) }}</span>
+            <span class="pricing__price-unit">{{ periodLabel }}</span>
+          </div>
+          <p class="pricing__price-note">
+            <span v-if="isYearly" class="pricing__saving">Ahorras {{ savingOf(plan) }}</span>
+            {{ alternativeOf(plan) }} · IVA no incluido
+          </p>
 
           <ul class="pricing__features">
             <li v-for="feature in plan.features" :key="feature" class="pricing__feature">
@@ -132,15 +179,22 @@ const unit = computed(() => (billing.value === 'monthly' ? '/ buzón al mes' : '
             size="lg"
             block
           >
-            {{ plan.ctaLabel }}
+            Contratar {{ plan.name }}
           </BaseButton>
         </article>
       </div>
 
-      <p class="pricing__disclaimer">
-        <AppIcon name="clock" :size="16" />
-        Los planes están en preparación. Escríbenos y te avisamos en cuanto publiquemos las tarifas.
-      </p>
+      <div class="pricing__footnotes">
+        <p class="pricing__footnote">
+          <AppIcon name="database" :size="16" />
+          Los GB son del plan entero, no de cada buzón. «Sin límite fijo» va sujeto a una política
+          de uso razonable.
+        </p>
+        <p class="pricing__footnote pricing__footnote--warn">
+          <AppIcon name="clock" :size="16" />
+          Tarifas orientativas. Los precios definitivos se publicarán al cerrar el servicio.
+        </p>
+      </div>
     </div>
   </section>
 </template>

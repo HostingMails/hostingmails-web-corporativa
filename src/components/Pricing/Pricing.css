@@ -12,6 +12,9 @@
 }
 
 .pricing__toggle-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
   padding: var(--hm-space-2) var(--hm-space-5);
   border-radius: var(--hm-radius-pill);
   color: var(--hm-color-text-muted);
@@ -26,12 +29,27 @@
   }
 }
 
+.pricing__toggle-badge {
+  padding: 2px var(--hm-space-2);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-amber-100);
+  color: var(--hm-color-accent-strong);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  transition: background-color var(--hm-duration) var(--hm-ease);
+}
+
 .pricing__toggle-option--active {
   background-color: var(--hm-color-primary);
   color: var(--hm-color-primary-contrast);
 
   &:hover {
     color: var(--hm-color-primary-contrast);
+  }
+
+  & .pricing__toggle-badge {
+    background-color: rgb(255 255 255 / 0.22);
+    color: var(--hm-neutral-0);
   }
 }
 
@@ -65,13 +83,16 @@
 }
 
 .pricing__card--featured {
-  border-color: var(--hm-green-300);
-  background:
-    linear-gradient(175deg, var(--hm-green-50) 0%, rgb(255 255 255 / 0) 45%),
-    var(--hm-color-surface);
+  border-color: var(--hm-amber-200);
   box-shadow: var(--hm-shadow-md);
+
+  &:hover {
+    border-color: var(--hm-amber-300);
+  }
 }
 
+/* El distintivo del plan recomendado va en ámbar: es el único punto
+   cálido de la sección y se ve al instante. */
 .pricing__tag {
   position: absolute;
   top: calc(var(--hm-space-3) * -1);
@@ -81,9 +102,9 @@
   gap: var(--hm-space-2);
   padding: var(--hm-space-1) var(--hm-space-3);
   border-radius: var(--hm-radius-pill);
-  background: var(--hm-gradient-brand);
-  box-shadow: var(--hm-shadow-brand);
-  color: var(--hm-color-primary-contrast);
+  background: var(--hm-gradient-accent-deep);
+  box-shadow: 0 10px 22px -12px rgb(133 87 15 / 0.7);
+  color: var(--hm-neutral-0);
   font-size: var(--hm-text-xs);
   font-weight: var(--hm-weight-semibold);
 }
@@ -97,12 +118,46 @@
   font-size: var(--hm-text-xl);
 }
 
-.pricing__summary {
+.pricing__audience {
   color: var(--hm-color-text-muted);
   font-size: var(--hm-text-sm);
 }
 
-/* --- Precio (provisional) --- */
+/* --- Almacenamiento: lo que de verdad distingue un plan de otro --- */
+.pricing__storage {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: center;
+  padding: var(--hm-space-4);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-bg-cool);
+}
+
+.pricing__storage-value {
+  color: var(--hm-green-700);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-2xl);
+  font-weight: var(--hm-weight-bold);
+  letter-spacing: var(--hm-tracking-tight);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pricing__storage-label {
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-xs);
+  line-height: 1.4;
+}
+
+.pricing__card--featured .pricing__storage {
+  background-color: var(--hm-amber-50);
+
+  & .pricing__storage-value {
+    color: var(--hm-color-accent-strong);
+  }
+}
+
+/* --- Precio --- */
 .pricing__price {
   display: flex;
   align-items: baseline;
@@ -112,7 +167,7 @@
 }
 
 .pricing__price-value {
-  color: var(--hm-neutral-300);
+  color: var(--hm-color-text);
   font-family: var(--hm-font-display);
   font-size: var(--hm-text-4xl);
   font-weight: var(--hm-weight-bold);
@@ -128,6 +183,17 @@
   margin-top: calc(var(--hm-space-4) * -1);
   color: var(--hm-neutral-400);
   font-size: var(--hm-text-xs);
+  line-height: 1.5;
+}
+
+.pricing__saving {
+  display: inline-block;
+  padding: 1px var(--hm-space-2);
+  margin-right: var(--hm-space-1);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-green-100);
+  color: var(--hm-green-800);
+  font-weight: var(--hm-weight-semibold);
 }
 
 /* --- Lista de características --- */
@@ -150,24 +216,41 @@
   }
 }
 
-/* --- Aviso final --- */
-.pricing__disclaimer {
+/* --- Notas al pie --- */
+.pricing__footnotes {
+  display: grid;
+  gap: var(--hm-space-3);
+  max-width: 46rem;
+  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+}
+
+.pricing__footnote {
   display: flex;
   gap: var(--hm-space-3);
-  align-items: center;
-  justify-content: center;
-  max-width: 40rem;
-  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  align-items: flex-start;
   padding: var(--hm-space-4) var(--hm-space-5);
-  border: 1px dashed var(--hm-green-200);
+  border: 1px solid var(--hm-color-border);
   border-radius: var(--hm-radius-md);
-  background-color: var(--hm-green-50);
-  color: var(--hm-green-800);
+  background-color: var(--hm-color-surface);
+  color: var(--hm-neutral-700);
   font-size: var(--hm-text-sm);
-  text-align: left;
+  line-height: var(--hm-leading-normal);
 
   & .app-icon {
     flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--hm-green-600);
+  }
+}
+
+.pricing__footnote--warn {
+  border-style: dashed;
+  border-color: var(--hm-amber-200);
+  background-color: var(--hm-amber-50);
+  color: var(--hm-amber-900);
+
+  & .app-icon {
+    color: var(--hm-color-accent-strong);
   }
 }
 
@@ -179,6 +262,11 @@
 
   .pricing__card:last-child {
     grid-column: span 2;
+  }
+
+  .pricing__footnotes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
   }
 }
 

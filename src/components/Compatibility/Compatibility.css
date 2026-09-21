@@ -75,6 +75,32 @@
   min-width: 0;
 }
 
+/* Aviso en ámbar: es el único matiz importante de la sección y tiene
+   que leerse sin parecer un error. */
+.compatibility__warning {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: flex-start;
+  padding: var(--hm-space-4) var(--hm-space-5);
+  border: 1px solid var(--hm-color-accent-border);
+  border-left: 3px solid var(--hm-color-accent);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-accent-soft);
+  color: var(--hm-amber-900);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+
+  & strong {
+    font-weight: var(--hm-weight-semibold);
+  }
+}
+
+.compatibility__warning-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--hm-color-accent-strong);
+}
+
 /* --- Panel de configuración --- */
 .compatibility__panel {
   display: flex;

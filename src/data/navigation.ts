@@ -6,6 +6,7 @@ export interface NavLink {
 /** Anclas de la one-page. Las comparten la cabecera y el pie. */
 export const navLinks: readonly NavLink[] = [
   { id: 'caracteristicas', label: 'Características' },
+  { id: 'incluido', label: 'Qué incluye' },
   { id: 'como-funciona', label: 'Cómo funciona' },
   { id: 'compatibilidad', label: 'Compatibilidad' },
   { id: 'planes', label: 'Planes' },

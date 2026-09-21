@@ -19,6 +19,34 @@
   --hm-green-800: #174d39;
   --hm-green-900: #103528;
 
+  /* ---------------------------------------------------------------
+   * Color · ámbar (acento secundario)
+   * Para lo que debe destacar sobre el verde sin competir con él:
+   * el plan recomendado, los servicios adicionales, los avisos.
+   * --------------------------------------------------------------- */
+  --hm-amber-50: #fdf6e9;
+  --hm-amber-100: #f9e9c8;
+  --hm-amber-200: #f2d79c;
+  --hm-amber-300: #e6bc63;
+  --hm-amber-400: #d69f33;
+  --hm-amber-500: #c8861a;
+  --hm-amber-600: #a96e12;
+  --hm-amber-700: #85570f;
+  --hm-amber-900: #4a3008;
+
+  /* ---------------------------------------------------------------
+   * Color · pizarra (bandas oscuras y fondos fríos)
+   * Un gris azulado, más frío que el verde, para separar bloques.
+   * --------------------------------------------------------------- */
+  --hm-slate-50: #f2f4f3;
+  --hm-slate-100: #e7eaea;
+  --hm-slate-200: #d2d8d9;
+  --hm-slate-400: #8a999e;
+  --hm-slate-600: #48595f;
+  --hm-slate-700: #3a4a50;
+  --hm-slate-800: #2e3b42;
+  --hm-slate-900: #1e282d;
+
   /* Color · neutros */
   --hm-neutral-0: #ffffff;
   --hm-neutral-50: #f7faf7;
@@ -37,9 +65,22 @@
   --hm-color-primary-soft: var(--hm-green-50);
   --hm-color-primary-contrast: var(--hm-neutral-0);
 
+  /* Acento secundario. El 500 es para grafismo; sobre fondo claro el
+     texto usa el 700, que sí llega al contraste mínimo. */
+  --hm-color-accent: var(--hm-amber-500);
+  --hm-color-accent-strong: var(--hm-amber-700);
+  --hm-color-accent-solid: var(--hm-amber-600);
+  --hm-color-accent-soft: var(--hm-amber-50);
+  --hm-color-accent-border: var(--hm-amber-100);
+
+  /* Cuatro fondos que se van alternando: blanco, gris frío, verde
+     cálido y las dos bandas oscuras. */
   --hm-color-bg: var(--hm-neutral-0);
   --hm-color-bg-alt: var(--hm-neutral-50);
+  --hm-color-bg-cool: var(--hm-slate-50);
+  --hm-color-bg-mint: var(--hm-green-50);
   --hm-color-bg-dark: var(--hm-green-900);
+  --hm-color-bg-slate: var(--hm-slate-900);
   --hm-color-surface: var(--hm-neutral-0);
   --hm-color-surface-soft: var(--hm-neutral-100);
 
@@ -61,6 +102,11 @@
   );
   --hm-gradient-brand: linear-gradient(135deg, var(--hm-green-500) 0%, var(--hm-green-700) 100%);
   --hm-gradient-dark: linear-gradient(145deg, var(--hm-green-800) 0%, var(--hm-green-900) 100%);
+  --hm-gradient-slate: linear-gradient(150deg, var(--hm-slate-800) 0%, var(--hm-slate-900) 100%);
+  /* El gradiente claro es solo para grafismo (barras, filetes). Si va a
+     llevar texto blanco encima se usa el oscuro, que sí da contraste. */
+  --hm-gradient-accent: linear-gradient(135deg, var(--hm-amber-400) 0%, var(--hm-amber-600) 100%);
+  --hm-gradient-accent-deep: linear-gradient(135deg, var(--hm-amber-600) 0%, var(--hm-amber-700) 100%);
 
   /* ---------------------------------------------------------------
    * Tipografía

@@ -45,7 +45,7 @@ const dnsRecords = [
 </script>
 
 <template>
-  <section id="como-funciona" class="hm-section hm-section--alt how-it-works">
+  <section id="como-funciona" class="hm-section hm-section--cool how-it-works">
     <div class="hm-container how-it-works__inner">
       <aside class="how-it-works__aside">
         <div class="how-it-works__aside-inner">

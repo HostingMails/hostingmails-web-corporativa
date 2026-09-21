@@ -114,8 +114,36 @@ button {
   padding-block: var(--hm-section-y);
 }
 
+/* Los fondos de sección se van alternando para que la página no sea
+   una sucesión de bloques blancos. */
 .hm-section--alt {
   background-color: var(--hm-color-bg-alt);
+}
+
+.hm-section--cool {
+  background-color: var(--hm-color-bg-cool);
+}
+
+.hm-section--mint {
+  background-color: var(--hm-color-bg-mint);
+}
+
+.hm-section--accent {
+  background-color: var(--hm-color-accent-soft);
+}
+
+.hm-section--slate {
+  background: var(--hm-gradient-slate);
+  color: var(--hm-color-text-inverse);
+}
+
+/* Filetes de separación entre dos fondos claros consecutivos */
+.hm-section--edge-top {
+  border-top: 1px solid var(--hm-color-border);
+}
+
+.hm-section--edge-bottom {
+  border-bottom: 1px solid var(--hm-color-border);
 }
 
 /* Etiqueta pequeña sobre los titulares de sección */

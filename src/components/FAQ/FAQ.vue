@@ -12,40 +12,52 @@ interface FaqItem {
 
 const items: readonly FaqItem[] = [
   {
+    id: 'buzones',
+    question: '¿Cuántos buzones puedo crear?',
+    answer:
+      'No hay un número fijo. Contratas almacenamiento para la empresa y repartes las cuentas como quieras. Lo único que lo acota es una política de uso razonable, con límites técnicos de conexiones y de envíos por hora para evitar abusos.',
+  },
+  {
+    id: 'almacenamiento',
+    question: '¿Los GB son de cada buzón o de todos?',
+    answer:
+      'De todos. Si contratas 20 GB, esos 20 GB se reparten entre los buzones del plan. Es lo que permite tener diez cuentas sin pagar diez licencias: un buzón que casi no se usa deja sitio al que sí.',
+  },
+  {
     id: 'dominio',
     question: '¿Puedo usar el dominio que ya tengo?',
     answer:
-      'Sí. Solo hay que apuntar unos registros en el DNS del dominio. Si está contratado en otro proveedor, te indicamos exactamente qué añadir.',
+      'Sí. Solo hay que apuntar unos registros en el DNS del dominio. Si está contratado en otro proveedor, te indicamos exactamente qué añadir; si quieres, lo hacemos nosotros.',
   },
   {
     id: 'migracion',
     question: '¿Se puede traer el correo que ya tenemos?',
     answer:
-      'Sí, el contenido de los buzones actuales se puede migrar. Antes del cambio revisamos contigo qué cuentas hay que traer y cómo hacerlo sin cortes.',
+      'Sí, y es un servicio aparte que empieza en 39 €. El precio final depende del número de cuentas y del volumen de mensajes, así que lo presupuestamos después de ver qué hay que mover. La idea es hacer el cambio sin que nadie deje de recibir correo.',
+  },
+  {
+    id: 'gmail',
+    question: '¿Funciona con Gmail?',
+    answer:
+      'En el móvil sí: añades la cuenta por IMAP en la aplicación de Gmail y la usas con normalidad. En el Gmail del navegador, Google retira en enero de 2027 la opción de enviar como cuenta externa, así que para trabajar desde el ordenador te recomendamos Outlook, Apple Mail, Thunderbird o nuestro webmail.',
   },
   {
     id: 'alias',
     question: '¿Qué diferencia hay entre un buzón y un alias?',
     answer:
-      'Un buzón es una cuenta independiente, con su espacio y su contraseña. Un alias es una dirección adicional que entrega los mensajes en un buzón que ya existe.',
+      'Un buzón es una cuenta independiente, con su contraseña y su bandeja. Un alias es una dirección adicional que entrega los mensajes en un buzón que ya existe: info@ y ventas@ pueden caer las dos en la misma cuenta.',
   },
   {
-    id: 'buzones',
-    question: '¿Cuántos buzones puedo crear?',
+    id: 'espacio',
+    question: '¿Qué pasa si me quedo sin espacio?',
     answer:
-      'Depende de la configuración que contrates. La estructura de planes está en preparación, así que de momento lo ajustamos caso por caso.',
-  },
-  {
-    id: 'movil',
-    question: '¿Funciona en el móvil?',
-    answer:
-      'Sí. Puedes configurar la cuenta en la aplicación de correo del teléfono o entrar desde el webmail con el navegador, sin instalar nada.',
+      'Te avisamos antes de llegar al límite. Puedes ampliar el almacenamiento o pasar al plan siguiente sin tocar la configuración: los buzones, los alias y los dispositivos siguen igual.',
   },
   {
     id: 'spam',
     question: '¿Cómo se gestiona el spam?',
     answer:
-      'Los mensajes pasan por un filtro antes de llegar al buzón. Lo que se detecta como correo no deseado queda en su carpeta, donde puedes revisarlo cuando quieras.',
+      'Los mensajes pasan por un filtro antivirus y antispam antes de llegar al buzón. Lo que se detecta como correo no deseado queda en su carpeta, donde puedes revisarlo cuando quieras.',
   },
 ] as const
 

@@ -1,0 +1,161 @@
+/* Tarifario: la única sección con formato de lista de precios, para
+   que no se confunda con los planes de arriba. */
+.add-ons {
+  padding-block: var(--hm-section-y);
+  background-color: var(--hm-color-accent-soft);
+}
+
+.add-ons__inner {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: start;
+}
+
+/* --- Cabecera --- */
+.add-ons__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-4);
+}
+
+.add-ons__eyebrow {
+  color: var(--hm-color-accent-strong);
+}
+
+.add-ons__title {
+  font-size: var(--hm-text-3xl);
+}
+
+.add-ons__intro {
+  max-width: 26rem;
+  color: var(--hm-neutral-700);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Filas --- */
+.add-ons__list {
+  display: grid;
+  gap: var(--hm-space-2);
+  padding: var(--hm-space-3);
+  border: 1px solid var(--hm-color-accent-border);
+  border-radius: var(--hm-radius-lg);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-sm);
+}
+
+.add-ons__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--hm-space-2) var(--hm-space-4);
+  align-items: center;
+  padding: var(--hm-space-4);
+  border-radius: var(--hm-radius-md);
+  transition: background-color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    background-color: var(--hm-amber-50);
+  }
+}
+
+.add-ons__icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--hm-radius-sm);
+  background-color: var(--hm-amber-50);
+  color: var(--hm-color-accent-strong);
+}
+
+.add-ons__text {
+  min-width: 0;
+}
+
+.add-ons__name {
+  font-size: var(--hm-text-base);
+}
+
+.add-ons__description {
+  margin-top: 2px;
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+}
+
+/* La línea de puntos solo aparece cuando hay sitio para ella */
+.add-ons__leader {
+  display: none;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    var(--hm-neutral-300) 0 4px,
+    transparent 4px 9px
+  );
+  background-size: 9px 1px;
+  background-repeat: repeat-x;
+}
+
+.add-ons__price {
+  grid-column: 2;
+  color: var(--hm-color-accent-strong);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-base);
+  font-weight: var(--hm-weight-bold);
+  white-space: nowrap;
+}
+
+.add-ons__row--included {
+  background-color: var(--hm-green-50);
+
+  & .add-ons__icon {
+    background-color: var(--hm-green-100);
+    color: var(--hm-green-700);
+  }
+
+  & .add-ons__price {
+    color: var(--hm-green-700);
+  }
+
+  &:hover {
+    background-color: var(--hm-green-100);
+  }
+}
+
+.add-ons__note {
+  color: var(--hm-amber-900);
+  font-size: var(--hm-text-xs);
+  opacity: 0.75;
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 620px) {
+  .add-ons__row {
+    grid-template-columns: auto minmax(0, 3fr) minmax(2rem, 1fr) auto;
+  }
+
+  .add-ons__leader {
+    display: block;
+  }
+
+  .add-ons__price {
+    grid-column: auto;
+  }
+}
+
+@media (width >= 960px) {
+  .add-ons__inner {
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+
+  .add-ons__head {
+    position: sticky;
+    top: calc(var(--hm-header-height) + var(--hm-space-10));
+  }
+
+  .add-ons__note {
+    grid-column: 2;
+    margin-top: calc(var(--hm-space-6) * -1);
+  }
+}

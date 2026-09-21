@@ -17,6 +17,7 @@ const columns: readonly FooterColumn[] = [
   {
     title: 'Soporte',
     links: [
+      { label: 'Servicios adicionales', href: '#servicios' },
       { label: 'Guías de configuración', href: '#compatibilidad' },
       { label: 'Preguntas frecuentes', href: '#faq' },
       { label: 'Contacto', href: '#contacto' },
