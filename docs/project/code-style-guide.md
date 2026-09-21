@@ -2,9 +2,9 @@
 
 Las reglas que se aplican en este proyecto. Mandan sobre cualquier valor por
 defecto. Esto es **código**; lo visual (color, tipografía, escala) va en
-`docs/design/design-system.md` cuando se escriba.
+`docs/design/design-system.md`.
 
-> **Ojo:** el código actual **no cumple** tres de estas reglas todavía. Están
+> **Ojo:** el código actual **no cumple** algunas de estas reglas. Están
 > acordadas, no aplicadas. El desfase está listado al final, en
 > [Deuda pendiente](#deuda-pendiente).
 
@@ -142,15 +142,18 @@ Y además:
 
 ## Deuda pendiente
 
-El código actual se desvía de la guía en tres puntos. Se arregla con una pasada
+El código actual se desvía de la guía en estos puntos. Se arregla con una pasada
 de Neo, no a mano y no ahora mismo:
+
+> Los tres primeros chocan con lo que se pidió por escrito al montar el proyecto
+> (carpetas `Header/Header.vue`, CSS importado desde el `<script setup>`). Antes
+> de tocarlos hay que decidir cuál de las dos cosas manda.
 
 | Regla | Qué hay ahora | Cómo se arregla |
 | --- | --- | --- |
 | kebab-case en disco | `components/ui/BaseButton/BaseButton.vue`, `Header/Header.vue` | `/neo fix-naming` |
 | `<style src>` | El CSS se importa desde el script: `import './Header.css'` | `/neo fix-css` |
 | Clase raíz + nesting | BEM plano: `.site-header__nav-link--active` | `/neo fix-css` |
-| Alias `@/` | Imports relativos en `Header.vue`: `../../data/navigation` | `/neo fix-structure` |
 | `Header/` en `components/` | Su sitio es `components/layout/` | `/neo fix-structure` |
 
-Son cinco archivos de componente: cuanto antes se pase, más barato sale.
+El alias `@/` ya está aplicado en todo `src/`.
