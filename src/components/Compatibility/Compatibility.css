@@ -1,0 +1,200 @@
+.compatibility__inner {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+/* --- Columna de texto --- */
+.compatibility__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-5);
+}
+
+.compatibility__title {
+  font-size: var(--hm-text-3xl);
+}
+
+.compatibility__intro {
+  max-width: 34rem;
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+.compatibility__apps {
+  display: grid;
+  gap: var(--hm-space-3);
+  width: 100%;
+}
+
+.compatibility__app {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-3);
+  padding: var(--hm-space-3) var(--hm-space-4);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-surface);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease),
+    transform var(--hm-duration) var(--hm-ease);
+
+  & strong {
+    display: block;
+    font-size: var(--hm-text-sm);
+    font-weight: var(--hm-weight-semibold);
+  }
+
+  & small {
+    display: block;
+    color: var(--hm-color-text-muted);
+    font-size: var(--hm-text-xs);
+  }
+
+  &:hover {
+    border-color: var(--hm-green-200);
+    box-shadow: var(--hm-shadow-sm);
+    transform: translateY(-2px);
+  }
+}
+
+.compatibility__app-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--hm-radius-sm);
+  background-color: var(--hm-green-50);
+  color: var(--hm-green-600);
+}
+
+.compatibility__app-text {
+  min-width: 0;
+}
+
+/* --- Panel de configuración --- */
+.compatibility__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-5);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  border-radius: var(--hm-radius-xl);
+  background: var(--hm-gradient-dark);
+  box-shadow: var(--hm-shadow-lg);
+  color: var(--hm-color-text-inverse);
+}
+
+.compatibility__panel-head {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: center;
+  padding-bottom: var(--hm-space-5);
+  border-bottom: 1px solid var(--hm-color-border-inverse);
+}
+
+.compatibility__panel-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--hm-radius-sm);
+  background-color: rgb(255 255 255 / 0.12);
+  color: var(--hm-green-200);
+}
+
+.compatibility__panel-title {
+  font-size: var(--hm-text-lg);
+}
+
+.compatibility__panel-subtitle {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+}
+
+.compatibility__servers {
+  display: grid;
+  gap: var(--hm-space-3);
+}
+
+.compatibility__server {
+  padding: var(--hm-space-4);
+  border: 1px solid var(--hm-color-border-inverse);
+  border-radius: var(--hm-radius-md);
+  background-color: rgb(255 255 255 / 0.05);
+}
+
+.compatibility__server-label {
+  margin-bottom: var(--hm-space-2);
+  color: var(--hm-green-300);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.compatibility__server-host {
+  overflow: hidden;
+  font-family: var(--hm-font-mono);
+  font-size: var(--hm-text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compatibility__server-detail {
+  margin-top: 2px;
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+}
+
+.compatibility__protocols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-3);
+  align-items: center;
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hm-space-2);
+  }
+
+  & li {
+    padding: var(--hm-space-1) var(--hm-space-3);
+    border: 1px solid var(--hm-color-border-inverse);
+    border-radius: var(--hm-radius-pill);
+    font-family: var(--hm-font-mono);
+    font-size: var(--hm-text-xs);
+  }
+}
+
+.compatibility__protocols-label {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.compatibility__note {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 560px) {
+  .compatibility__apps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 960px) {
+  .compatibility__inner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.85fr);
+  }
+}

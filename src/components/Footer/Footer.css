@@ -1,0 +1,113 @@
+.site-footer {
+  padding-top: clamp(3rem, 6vw, 5rem);
+  background-color: var(--hm-color-bg-dark);
+  color: var(--hm-color-text-inverse);
+}
+
+.site-footer__inner {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* --- Bloque de marca --- */
+.site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-4);
+  max-width: 24rem;
+}
+
+.site-footer__claim {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+}
+
+.site-footer__mail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  padding: var(--hm-space-2) var(--hm-space-4);
+  border: 1px solid var(--hm-color-border-inverse);
+  border-radius: var(--hm-radius-pill);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-medium);
+  transition:
+    background-color var(--hm-duration) var(--hm-ease),
+    border-color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: rgb(255 255 255 / 0.32);
+    background-color: rgb(255 255 255 / 0.08);
+  }
+}
+
+/* --- Columnas de enlaces --- */
+.site-footer__nav {
+  display: grid;
+  gap: var(--hm-space-8);
+}
+
+.site-footer__column {
+  display: grid;
+  gap: var(--hm-space-4);
+  align-content: start;
+
+  & ul {
+    display: grid;
+    gap: var(--hm-space-3);
+  }
+}
+
+.site-footer__column-title {
+  color: var(--hm-green-300);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.site-footer__link {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-sm);
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    color: var(--hm-color-text-inverse);
+  }
+}
+
+/* --- Línea inferior --- */
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-2) var(--hm-space-6);
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--hm-space-6);
+  border-top: 1px solid var(--hm-color-border-inverse);
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+}
+
+.site-footer__legal-note {
+  color: rgb(255 255 255 / 0.45);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 560px) {
+  .site-footer__nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--hm-space-6);
+  }
+}
+
+@media (width >= 960px) {
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}

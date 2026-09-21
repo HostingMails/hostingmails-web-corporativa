@@ -1,0 +1,51 @@
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-3);
+  font-family: var(--hm-font-display);
+  font-size: 1.1875rem;
+  font-weight: var(--hm-weight-bold);
+  letter-spacing: var(--hm-tracking-snug);
+}
+
+.brand-logo__mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--hm-radius-sm);
+  background: var(--hm-gradient-brand);
+  box-shadow: var(--hm-shadow-brand);
+  color: var(--hm-neutral-0);
+  transition: transform var(--hm-duration) var(--hm-ease);
+
+  & svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.brand-logo:hover .brand-logo__mark {
+  transform: rotate(-4deg) scale(1.04);
+}
+
+.brand-logo--light {
+  color: var(--hm-color-text);
+
+  & .brand-logo__word-accent {
+    color: var(--hm-color-primary);
+  }
+}
+
+.brand-logo--dark {
+  color: var(--hm-color-text-inverse);
+
+  & .brand-logo__mark {
+    background: rgb(255 255 255 / 0.12);
+    box-shadow: none;
+  }
+
+  & .brand-logo__word-accent {
+    color: var(--hm-green-300);
+  }
+}

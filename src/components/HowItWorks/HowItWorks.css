@@ -1,0 +1,179 @@
+.how-it-works__inner {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+/* --- Panel lateral --- */
+.how-it-works__aside-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-5);
+}
+
+.how-it-works__title {
+  font-size: var(--hm-text-3xl);
+}
+
+.how-it-works__intro {
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* Bloque de registros DNS */
+.how-it-works__dns {
+  width: 100%;
+  padding: var(--hm-space-4);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-xs);
+}
+
+.how-it-works__dns-title {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  margin-bottom: var(--hm-space-3);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.how-it-works__dns-row {
+  display: grid;
+  grid-template-columns: 62px 56px minmax(0, 1fr);
+  gap: var(--hm-space-2);
+  align-items: center;
+  padding-block: var(--hm-space-2);
+  border-top: 1px solid var(--hm-color-border);
+  font-family: var(--hm-font-mono);
+  font-size: var(--hm-text-xs);
+}
+
+.how-it-works__dns-type {
+  padding: 2px var(--hm-space-2);
+  border-radius: var(--hm-radius-xs);
+  background-color: var(--hm-green-100);
+  color: var(--hm-green-800);
+  font-weight: var(--hm-weight-semibold);
+  text-align: center;
+}
+
+.how-it-works__dns-host {
+  color: var(--hm-color-text);
+}
+
+.how-it-works__dns-value {
+  overflow: hidden;
+  color: var(--hm-color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Pasos --- */
+.how-it-works__steps {
+  display: grid;
+  gap: var(--hm-space-2);
+}
+
+.how-it-works__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--hm-space-5);
+  padding-bottom: var(--hm-space-8);
+
+  /* Línea que une un paso con el siguiente */
+  &:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: 52px;
+    bottom: 8px;
+    left: 23px;
+    width: 2px;
+    border-radius: var(--hm-radius-pill);
+    background: linear-gradient(to bottom, var(--hm-green-200), var(--hm-neutral-200));
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.how-it-works__marker {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-xs);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease);
+}
+
+.how-it-works__number {
+  color: var(--hm-green-600);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-bold);
+  letter-spacing: var(--hm-tracking-snug);
+}
+
+.how-it-works__step:hover .how-it-works__marker {
+  border-color: var(--hm-green-300);
+  background-color: var(--hm-green-50);
+}
+
+.how-it-works__step-body {
+  display: grid;
+  gap: var(--hm-space-3);
+  padding-top: var(--hm-space-2);
+}
+
+.how-it-works__step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-3);
+}
+
+.how-it-works__step-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--hm-radius-sm);
+  background-color: var(--hm-green-100);
+  color: var(--hm-green-700);
+}
+
+.how-it-works__step-title {
+  font-size: var(--hm-text-lg);
+}
+
+.how-it-works__step-text {
+  max-width: 34rem;
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 900px) {
+  .how-it-works__inner {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .how-it-works__aside-inner {
+    position: sticky;
+    top: calc(var(--hm-header-height) + var(--hm-space-10));
+    max-width: 27rem;
+  }
+}

@@ -1,0 +1,203 @@
+/* --- Selector de ciclo de facturación --- */
+.pricing__toggle {
+  display: flex;
+  gap: var(--hm-space-1);
+  width: fit-content;
+  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  padding: var(--hm-space-1);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-xs);
+}
+
+.pricing__toggle-option {
+  padding: var(--hm-space-2) var(--hm-space-5);
+  border-radius: var(--hm-radius-pill);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-semibold);
+  transition:
+    background-color var(--hm-duration) var(--hm-ease),
+    color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    color: var(--hm-color-text);
+  }
+}
+
+.pricing__toggle-option--active {
+  background-color: var(--hm-color-primary);
+  color: var(--hm-color-primary-contrast);
+
+  &:hover {
+    color: var(--hm-color-primary-contrast);
+  }
+}
+
+/* --- Rejilla de planes --- */
+.pricing__grid {
+  display: grid;
+  gap: var(--hm-space-4);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.pricing__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-5);
+  padding: clamp(1.75rem, 3vw, 2.25rem);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-lg);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-xs);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease),
+    transform var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: var(--hm-green-200);
+    box-shadow: var(--hm-shadow-md);
+    transform: translateY(-3px);
+  }
+}
+
+.pricing__card--featured {
+  border-color: var(--hm-green-300);
+  background:
+    linear-gradient(175deg, var(--hm-green-50) 0%, rgb(255 255 255 / 0) 45%),
+    var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-md);
+}
+
+.pricing__tag {
+  position: absolute;
+  top: calc(var(--hm-space-3) * -1);
+  left: clamp(1.75rem, 3vw, 2.25rem);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  padding: var(--hm-space-1) var(--hm-space-3);
+  border-radius: var(--hm-radius-pill);
+  background: var(--hm-gradient-brand);
+  box-shadow: var(--hm-shadow-brand);
+  color: var(--hm-color-primary-contrast);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+}
+
+.pricing__card-head {
+  display: grid;
+  gap: var(--hm-space-2);
+}
+
+.pricing__plan {
+  font-size: var(--hm-text-xl);
+}
+
+.pricing__summary {
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+}
+
+/* --- Precio (provisional) --- */
+.pricing__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--hm-space-2);
+  padding-top: var(--hm-space-4);
+  border-top: 1px solid var(--hm-color-border);
+}
+
+.pricing__price-value {
+  color: var(--hm-neutral-300);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-4xl);
+  font-weight: var(--hm-weight-bold);
+  line-height: 1;
+}
+
+.pricing__price-unit {
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+}
+
+.pricing__price-note {
+  margin-top: calc(var(--hm-space-4) * -1);
+  color: var(--hm-neutral-400);
+  font-size: var(--hm-text-xs);
+}
+
+/* --- Lista de características --- */
+.pricing__features {
+  display: grid;
+  gap: var(--hm-space-3);
+  margin-bottom: auto;
+}
+
+.pricing__feature {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: flex-start;
+  color: var(--hm-neutral-700);
+  font-size: var(--hm-text-sm);
+
+  & .app-icon {
+    margin-top: 3px;
+    color: var(--hm-green-600);
+  }
+}
+
+/* --- Aviso final --- */
+.pricing__disclaimer {
+  display: flex;
+  gap: var(--hm-space-3);
+  align-items: center;
+  justify-content: center;
+  max-width: 40rem;
+  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  padding: var(--hm-space-4) var(--hm-space-5);
+  border: 1px dashed var(--hm-green-200);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-green-50);
+  color: var(--hm-green-800);
+  font-size: var(--hm-text-sm);
+  text-align: left;
+
+  & .app-icon {
+    flex-shrink: 0;
+  }
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 720px) {
+  .pricing__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pricing__card:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (width >= 1000px) {
+  .pricing__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--hm-space-5);
+  }
+
+  .pricing__card:last-child {
+    grid-column: auto;
+  }
+
+  .pricing__card--featured {
+    transform: translateY(-12px);
+
+    &:hover {
+      transform: translateY(-16px);
+    }
+  }
+}

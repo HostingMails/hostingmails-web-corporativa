@@ -1,0 +1,118 @@
+.base-button {
+  --_bg: transparent;
+  --_color: var(--hm-color-text);
+  --_border: transparent;
+  --_shadow: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hm-space-2);
+  border: 1px solid var(--_border);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--_bg);
+  box-shadow: var(--_shadow);
+  color: var(--_color);
+  font-family: var(--hm-font-sans);
+  font-weight: var(--hm-weight-semibold);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  transition:
+    background-color var(--hm-duration) var(--hm-ease),
+    border-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease),
+    transform var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Tamaños */
+.base-button--sm {
+  padding: var(--hm-space-2) var(--hm-space-4);
+  font-size: var(--hm-text-sm);
+}
+
+.base-button--md {
+  padding: var(--hm-space-3) var(--hm-space-5);
+  font-size: var(--hm-text-sm);
+}
+
+.base-button--lg {
+  padding: var(--hm-space-4) var(--hm-space-8);
+  font-size: var(--hm-text-base);
+}
+
+/* Variantes */
+.base-button--primary {
+  --_bg: var(--hm-color-primary);
+  --_color: var(--hm-color-primary-contrast);
+  --_shadow: var(--hm-shadow-brand);
+
+  &:hover {
+    --_bg: var(--hm-color-primary-hover);
+  }
+
+  &:active {
+    --_bg: var(--hm-color-primary-active);
+  }
+}
+
+.base-button--secondary {
+  --_bg: var(--hm-color-surface);
+  --_color: var(--hm-color-text);
+  --_border: var(--hm-color-border-strong);
+  --_shadow: var(--hm-shadow-xs);
+
+  &:hover {
+    --_border: var(--hm-green-300);
+    --_color: var(--hm-green-700);
+  }
+}
+
+.base-button--ghost {
+  --_color: var(--hm-green-700);
+
+  &:hover {
+    --_bg: var(--hm-color-primary-soft);
+  }
+}
+
+.base-button--inverse {
+  --_bg: var(--hm-neutral-0);
+  --_color: var(--hm-green-800);
+  --_shadow: var(--hm-shadow-md);
+
+  &:hover {
+    --_bg: var(--hm-green-50);
+  }
+}
+
+.base-button--outline-inverse {
+  --_color: var(--hm-color-text-inverse);
+  --_border: var(--hm-color-border-inverse);
+
+  &:hover {
+    --_bg: rgb(255 255 255 / 0.1);
+    --_border: rgb(255 255 255 / 0.32);
+  }
+}
+
+.base-button--block {
+  width: 100%;
+}
+
+.base-button__trailing {
+  display: inline-flex;
+  transition: transform var(--hm-duration) var(--hm-ease);
+}
+
+.base-button:hover .base-button__trailing {
+  transform: translateX(3px);
+}

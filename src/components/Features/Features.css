@@ -1,0 +1,245 @@
+.features {
+  background-color: var(--hm-color-bg);
+}
+
+.features__grid {
+  display: grid;
+  gap: var(--hm-space-4);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* --- Tarjeta base --- */
+.features__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-4);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-lg);
+  background-color: var(--hm-color-surface);
+  box-shadow: var(--hm-shadow-xs);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease),
+    transform var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: var(--hm-green-200);
+    box-shadow: var(--hm-shadow-md);
+    transform: translateY(-3px);
+  }
+}
+
+.features__title {
+  font-size: var(--hm-text-xl);
+}
+
+.features__title--sm {
+  font-size: var(--hm-text-lg);
+}
+
+.features__text {
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Iconos --- */
+.features__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--hm-radius-md);
+}
+
+.features__icon--solid {
+  background: var(--hm-gradient-brand);
+  box-shadow: var(--hm-shadow-brand);
+  color: var(--hm-color-primary-contrast);
+}
+
+.features__icon--soft {
+  background-color: var(--hm-green-100);
+  color: var(--hm-green-700);
+}
+
+.features__icon--outline {
+  border: 1px solid var(--hm-color-border);
+  background-color: var(--hm-neutral-50);
+  color: var(--hm-green-600);
+}
+
+/* --- Tarjeta destacada --- */
+.features__card--hero {
+  gap: var(--hm-space-6);
+  background:
+    linear-gradient(160deg, var(--hm-green-50) 0%, rgb(255 255 255 / 0) 62%),
+    var(--hm-color-surface);
+}
+
+.features__card-head {
+  display: flex;
+  gap: var(--hm-space-4);
+  align-items: flex-start;
+
+  & div {
+    display: grid;
+    gap: var(--hm-space-2);
+  }
+}
+
+.features__mailboxes {
+  display: grid;
+  gap: var(--hm-space-2);
+}
+
+.features__mailbox {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--hm-space-3);
+  align-items: center;
+  padding: var(--hm-space-3) var(--hm-space-4);
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-surface);
+  color: var(--hm-green-600);
+
+  & strong {
+    display: block;
+    overflow: hidden;
+    color: var(--hm-color-text);
+    font-size: var(--hm-text-sm);
+    font-weight: var(--hm-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & small {
+    color: var(--hm-color-text-muted);
+    font-size: var(--hm-text-xs);
+  }
+}
+
+.features__mailbox-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--hm-green-400);
+}
+
+.features__mailbox-text {
+  min-width: 0;
+}
+
+/* --- Tarjeta de seguridad --- */
+.features__card--security {
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--hm-green-50) 0%, rgb(255 255 255 / 0) 60%),
+    var(--hm-color-surface);
+}
+
+.features__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-2);
+  margin-top: auto;
+}
+
+.features__chip {
+  padding: var(--hm-space-2) var(--hm-space-3);
+  border: 1px solid var(--hm-green-100);
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-green-50);
+  color: var(--hm-green-700);
+  font-family: var(--hm-font-mono);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-medium);
+  letter-spacing: 0.04em;
+}
+
+/* --- Tarjeta ancha --- */
+.features__card--wide {
+  gap: var(--hm-space-6);
+  background:
+    linear-gradient(100deg, var(--hm-neutral-50) 0%, rgb(255 255 255 / 0) 55%),
+    var(--hm-color-surface);
+}
+
+.features__wide-text {
+  display: grid;
+  gap: var(--hm-space-3);
+  max-width: 34rem;
+}
+
+.features__points {
+  display: grid;
+  gap: var(--hm-space-3);
+}
+
+.features__point {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  color: var(--hm-neutral-700);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-medium);
+
+  & .app-icon {
+    color: var(--hm-green-600);
+  }
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 680px) {
+  .features__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .features__card--hero,
+  .features__card--security,
+  .features__card--wide {
+    grid-column: span 6;
+  }
+
+  .features__card--compact {
+    grid-column: span 3;
+  }
+
+  .features__card--compact:nth-of-type(5) {
+    grid-column: span 6;
+  }
+}
+
+@media (width >= 1000px) {
+  .features__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--hm-space-5);
+  }
+
+  .features__card--hero {
+    grid-column: span 7;
+  }
+
+  .features__card--security {
+    grid-column: span 5;
+  }
+
+  .features__card--compact,
+  .features__card--compact:nth-of-type(5) {
+    grid-column: span 4;
+  }
+
+  .features__card--wide {
+    grid-column: span 12;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--hm-space-10);
+  }
+
+  .features__points {
+    grid-template-columns: repeat(3, auto);
+    gap: var(--hm-space-6);
+  }
+}

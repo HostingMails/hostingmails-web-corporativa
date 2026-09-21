@@ -1,0 +1,133 @@
+.faq__inner {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+/* --- Columna de introducción --- */
+.faq__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-4);
+}
+
+.faq__title {
+  font-size: var(--hm-text-3xl);
+}
+
+.faq__text {
+  max-width: 26rem;
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Acordeón --- */
+.faq__list {
+  display: grid;
+  gap: var(--hm-space-3);
+}
+
+.faq__item {
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-md);
+  background-color: var(--hm-color-surface);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: var(--hm-green-200);
+  }
+}
+
+.faq__item--open {
+  border-color: var(--hm-green-200);
+  background-color: var(--hm-green-50);
+  box-shadow: var(--hm-shadow-sm);
+}
+
+.faq__question-wrapper {
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.faq__question {
+  display: flex;
+  gap: var(--hm-space-4);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--hm-space-5);
+  color: var(--hm-color-text);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-base);
+  font-weight: var(--hm-weight-semibold);
+  text-align: left;
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    color: var(--hm-green-700);
+  }
+}
+
+.faq__chevron {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--hm-radius-pill);
+  background-color: var(--hm-neutral-100);
+  color: var(--hm-color-text-muted);
+  transition:
+    transform var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease),
+    color var(--hm-duration) var(--hm-ease);
+}
+
+.faq__item--open .faq__chevron {
+  background-color: var(--hm-color-primary);
+  color: var(--hm-color-primary-contrast);
+  transform: rotate(180deg);
+}
+
+/* Apertura suave con filas de rejilla */
+.faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--hm-duration) var(--hm-ease),
+    visibility var(--hm-duration) var(--hm-ease);
+}
+
+.faq__item--open .faq__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.faq__panel-inner {
+  overflow: hidden;
+}
+
+.faq__answer {
+  padding: 0 var(--hm-space-5) var(--hm-space-5);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  line-height: var(--hm-leading-relaxed);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 900px) {
+  .faq__inner {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .faq__intro {
+    position: sticky;
+    top: calc(var(--hm-header-height) + var(--hm-space-10));
+  }
+}

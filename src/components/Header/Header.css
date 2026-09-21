@@ -1,0 +1,198 @@
+.site-header {
+  position: sticky;
+  z-index: var(--hm-z-header);
+  top: 0;
+  border-bottom: 1px solid transparent;
+  background-color: rgb(255 255 255 / 0.82);
+  backdrop-filter: blur(14px);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    box-shadow var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease);
+}
+
+.site-header--scrolled {
+  border-bottom-color: var(--hm-color-border);
+  background-color: rgb(255 255 255 / 0.94);
+  box-shadow: var(--hm-shadow-sm);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hm-space-6);
+  height: var(--hm-header-height);
+}
+
+/* --- Navegación de escritorio --- */
+.site-header__nav {
+  display: none;
+}
+
+.site-header__nav-list {
+  display: flex;
+  align-items: center;
+  gap: var(--hm-space-1);
+}
+
+.site-header__nav-link {
+  position: relative;
+  display: block;
+  padding: var(--hm-space-2) var(--hm-space-3);
+  border-radius: var(--hm-radius-sm);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-medium);
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    border-radius: var(--hm-radius-pill);
+    background-color: var(--hm-color-primary);
+    transform: translateX(-50%);
+    transition: width var(--hm-duration) var(--hm-ease);
+  }
+
+  &:hover {
+    color: var(--hm-color-text);
+  }
+}
+
+.site-header__nav-link--active {
+  color: var(--hm-green-700);
+
+  &::after {
+    width: 18px;
+  }
+}
+
+/* --- Acciones de escritorio --- */
+.site-header__actions {
+  display: none;
+  align-items: center;
+  gap: var(--hm-space-4);
+}
+
+.site-header__login {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  color: var(--hm-color-text-muted);
+  font-size: var(--hm-text-sm);
+  font-weight: var(--hm-weight-medium);
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    color: var(--hm-green-700);
+  }
+}
+
+/* --- Botón de menú --- */
+.site-header__burger {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--hm-color-border);
+  border-radius: var(--hm-radius-sm);
+  background-color: var(--hm-color-surface);
+  color: var(--hm-color-text);
+  transition:
+    border-color var(--hm-duration) var(--hm-ease),
+    background-color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    border-color: var(--hm-green-300);
+    background-color: var(--hm-color-primary-soft);
+  }
+}
+
+/* --- Panel móvil --- */
+.site-header__panel {
+  position: fixed;
+  z-index: var(--hm-z-drawer);
+  top: var(--hm-header-height);
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-6);
+  max-height: calc(100dvh - var(--hm-header-height));
+  padding: var(--hm-space-6) var(--hm-gutter) var(--hm-space-10);
+  overflow-y: auto;
+  border-top: 1px solid var(--hm-color-border);
+  background-color: var(--hm-color-bg);
+  box-shadow: var(--hm-shadow-lg);
+}
+
+.site-header__panel-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header__panel-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--hm-space-4);
+  border-bottom: 1px solid var(--hm-color-border);
+  color: var(--hm-color-text);
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-lg);
+  font-weight: var(--hm-weight-semibold);
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  & .app-icon {
+    color: var(--hm-neutral-400);
+    transition: transform var(--hm-duration) var(--hm-ease);
+  }
+
+  &:hover {
+    color: var(--hm-green-600);
+
+    & .app-icon {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.site-header__panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hm-space-3);
+}
+
+.site-header-panel-enter-active,
+.site-header-panel-leave-active {
+  transition:
+    opacity var(--hm-duration) var(--hm-ease),
+    transform var(--hm-duration) var(--hm-ease);
+}
+
+.site-header-panel-enter-from,
+.site-header-panel-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 900px) {
+  .site-header__burger {
+    display: none;
+  }
+
+  .site-header__nav,
+  .site-header__actions {
+    display: flex;
+  }
+
+  .site-header__panel {
+    display: none !important;
+  }
+}

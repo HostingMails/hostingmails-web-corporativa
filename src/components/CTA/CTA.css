@@ -1,0 +1,157 @@
+.cta {
+  padding-block: clamp(2rem, 4vw, 3rem) var(--hm-section-y);
+}
+
+.cta__panel {
+  position: relative;
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(2.25rem, 5vw, 4rem);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--hm-radius-2xl);
+  background: var(--hm-gradient-dark);
+  box-shadow: var(--hm-shadow-lg);
+  color: var(--hm-color-text-inverse);
+}
+
+/* --- Decoración --- */
+.cta__decoration {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.cta__glow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 34rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(85 167 126 / 0.45), transparent 66%);
+  filter: blur(50px);
+}
+
+.cta__pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(255 255 255 / 0.13) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(115deg, #000 0%, transparent 62%);
+}
+
+/* --- Texto --- */
+.cta__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hm-space-5);
+}
+
+.cta__eyebrow {
+  color: var(--hm-green-300);
+}
+
+.cta__title {
+  max-width: 20ch;
+  color: var(--hm-color-text-inverse);
+  font-size: var(--hm-text-4xl);
+}
+
+.cta__text {
+  max-width: 34rem;
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-md);
+  line-height: var(--hm-leading-relaxed);
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-3);
+}
+
+.cta__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hm-space-3) var(--hm-space-6);
+  margin-top: var(--hm-space-1);
+}
+
+.cta__point {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hm-space-2);
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-sm);
+
+  & .app-icon {
+    color: var(--hm-green-300);
+  }
+}
+
+/* --- Tarjeta de contacto --- */
+.cta__card {
+  display: grid;
+  gap: var(--hm-space-2);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid var(--hm-color-border-inverse);
+  border-radius: var(--hm-radius-xl);
+  background-color: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(8px);
+}
+
+.cta__card-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: var(--hm-space-2);
+  border-radius: var(--hm-radius-md);
+  background-color: rgb(255 255 255 / 0.12);
+  color: var(--hm-green-200);
+}
+
+.cta__card-label {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+  font-weight: var(--hm-weight-semibold);
+  letter-spacing: var(--hm-tracking-wide);
+  text-transform: uppercase;
+}
+
+.cta__card-mail {
+  font-family: var(--hm-font-display);
+  font-size: var(--hm-text-lg);
+  font-weight: var(--hm-weight-semibold);
+  overflow-wrap: anywhere;
+  transition: color var(--hm-duration) var(--hm-ease);
+
+  &:hover {
+    color: var(--hm-green-200);
+  }
+}
+
+.cta__card-note {
+  color: var(--hm-color-text-inverse-muted);
+  font-size: var(--hm-text-xs);
+}
+
+/* --- Puntos de ruptura --- */
+@media (width >= 900px) {
+  .cta__panel {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  }
+}
+
+@media (width <= 480px) {
+  .cta__actions {
+    width: 100%;
+  }
+
+  .cta__actions > * {
+    flex: 1 1 100%;
+  }
+}
