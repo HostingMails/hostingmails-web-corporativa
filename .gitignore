@@ -7,3 +7,11 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 *.log
+
+# Secretos y entorno
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
