@@ -54,3 +54,18 @@ jobs:
           name: dist
           path: dist/
           retention-days: 5
+
+  # Deploy en Coolify: solo en main y si el CI pasa. Sin el secret del webhook, avisa y no hace nada.
+  deploy:
+    needs: [ci]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          URL: ${{ secrets.COOLIFY_WEBHOOK }}
+        run: |
+          [ -n "$URL" ] || { echo "::warning::Falta el secret COOLIFY_WEBHOOK: no se despliega."; exit 0; }
+          [ -n "$TOKEN" ] || { echo "::error::Falta el secret COOLIFY_TOKEN."; exit 1; }
+          curl -fsS "$URL" -H "Authorization: Bearer $TOKEN"
